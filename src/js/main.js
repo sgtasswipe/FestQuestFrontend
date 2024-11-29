@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
  // alt herunder er i til billede API'en
-    const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
+    const UNSPLASH_ACCESS_KEY = "rwTK8Bqlzzqmvf05Slh20N2Z92il3u_NYt5_mhD5V_Q";
     
     if (document.getElementById('searchButton')) {
         const searchButton = document.getElementById('searchButton');
