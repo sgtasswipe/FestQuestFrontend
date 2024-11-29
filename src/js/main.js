@@ -1,3 +1,5 @@
+import { config } from './config.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('FestQuest Frontend Loaded');
     
@@ -84,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
  // alt herunder er i til billede API'en
-    const UNSPLASH_ACCESS_KEY = 'Am5bmpWxe-yJlIgf4etcgTcX1HjzBg-16veiWuYCz98';
+    const UNSPLASH_ACCESS_KEY = config.UNSPLASH_ACCESS_KEY;
     
     if (document.getElementById('searchButton')) {
         const searchButton = document.getElementById('searchButton');

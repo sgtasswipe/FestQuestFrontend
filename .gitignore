@@ -1,3 +1,8 @@
 node_modules/
 dist/
 .env
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
+src/js/config.js
