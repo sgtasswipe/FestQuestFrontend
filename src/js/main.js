@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                const response = await fetch('http://localhost:8080/api/quests/create', {
+                const response = await fetch("http://localhost:8080/questboard/quest", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -51,39 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             endTimeFields.style.display = e.target.checked ? 'block' : 'none';
         });
         
-        questForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const questData = {
-                title: document.getElementById('questTitle').value,
-                description: document.getElementById('questDescription').value,
-                imageUrl: document.getElementById('questImageUrl').value,
-                startTime: `${document.getElementById('questStartDate').value}T${document.getElementById('questStartTime').value}:00`,
-                // Set default end time if not checked
-                endTime: showEndTimeCheckbox.checked 
-                    ? `${document.getElementById('questEndDate').value}T${document.getElementById('questEndTime').value}:00`
-                    : `${document.getElementById('questStartDate').value}T00:00:00`
-            };
-            
-            try {
-                const response = await fetch('http://localhost:8080/api/quests/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(questData)
-                });
 
-                if (response.ok) {
-                    window.location.href = 'index.html';
-                } else {
-                    console.error('Failed to create quest');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
-    }
  // alt herunder er i til billede API'en
     const UNSPLASH_ACCESS_KEY = "rwTK8Bqlzzqmvf05Slh20N2Z92il3u_NYt5_mhD5V_Q";
     
@@ -163,4 +131,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});
+} });
