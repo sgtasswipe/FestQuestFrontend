@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/FestQuestFrontend.iml" filepath="$PROJECT_DIR$/.idea/FestQuestFrontend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/FestQuestFrontendFix.iml" filepath="$PROJECT_DIR$/.idea/FestQuestFrontendFix.iml" />
     </modules>
   </component>
 </project>
