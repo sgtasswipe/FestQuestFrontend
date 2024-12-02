@@ -10,6 +10,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     const questForm = document.querySelector('form');
+
+    if (questForm) {
+        questForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const questData = {
+                title: document.getElementById('questTitle').value,
+                description: document.getElementById('questDescription').value,
+                imageUrl: document.getElementById('questImageUrl').value,
+                startTime: `${document.getElementById('questStartDate').value}T${document.getElementById('questStartTime').value}:00`,
+                endTime: `${document.getElementById('questEndDate').value}T${document.getElementById('questEndTime').value}:00`
+            };
+
+            try {
+                const response = await fetch("http://localhost:8080/questboard/quest", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(questData)
+                });
+
+                if (response.ok) {
+                    window.location.href = 'index.html';
+                } else {
+                    console.error('Failed to create quest');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
     const showEndTimeCheckbox = document.getElementById('showEndTime');
 
     if (questForm && showEndTimeCheckbox) {
@@ -23,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showEndTimeCheckbox.addEventListener('change', (e) => {
             endTimeFields.style.display = e.target.checked ? 'block' : 'none';
         });
+
 
         const createQuestButton = document.getElementById('createQuestButton');
 
@@ -151,5 +185,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error fetching images:', error);
             }
         });
-    }
-});
+    }});
+
