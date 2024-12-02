@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+
+:root {
+    /*TODO !!HVIS DU MANGLER EN VARIABEL(farve, font, spacing osv...) SÅ SÆT DEN IND HER OG BRUG DEN I PROGRAMMET!!*/
+
+    /* Neutral Colors */
+    --clor-white: #FFFFFF;
+    --color-black: #000000;
+
+    --color-light-gray: #F1F2F4;
+    --color-gray: #B3B3B3;
+    --color-dark-gray: #171617;
+
+    /* Primary Colors */
+    --color-light-blue: #02BDFB;
+    --color-medium-blue: #017FB5;
+    --color-magenta: #9E0D59;
+
+    /* Status Colors */
+    --color-red: #CB4C4E;
+    --color-green: #5ca351;
+
+    /* Font and Spacing */
+    --font-primary: 'Inter', sans-serif;
+    --font-size-large: 2rem;
+    --font-size-medium: 1.25rem;
+    --font-size-small: 0.875rem;
+    --default-line-height: 1.6;
+
+    --space-small: 8px;
+    --space-medium: 16px;
+    --space-large: 32px;
+
+    /*TODO !!HVIS DU MANGLER EN VARIABEL(farve, font, spacing osv...) SÅ SÆT DEN IND HER OG BRUG DEN I PROGRAMMET!!*/
+}
+
+body {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-medium);
+    line-height: var(--default-line-height);
+    color: var(--color-light-gray);
+    margin: 0 20vw 0 20vw;
+    padding: 0;
+    background: linear-gradient(to top, var(--color-dark-gray), var(--color-black)) fixed;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--color-light-gray);
+    font-weight: 500;
+    margin-bottom: var(--space-medium);
+}
+
+h1 {
+    font-size: var(--font-size-large);
+    padding-bottom: var(--space-small);
+    border-bottom: 1px solid rgba(241, 242, 244, 0.3);
+}
+
+h2 {
+    font-size: calc(var(--font-size-large) - 0.25rem);
+}
+
+h3 {
+    font-size: calc(var(--font-size-medium) + 0.25rem);
+}
+
+@media (max-width: 768px) {
+    h1 { font-size: calc(var(--font-size-large) - 0.5rem); }
+    h2 { font-size: calc(var(--font-size-medium) + 0.25rem); }
+    body { font-size: var(--font-size-small); }
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f9fafb;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #2d3748;
+    color: #edf2f7;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+header p {
+    margin: 5px 0 0 0;
+    font-size: 1rem;
+    color: #a0aec0;
+}
+
+main {
+    padding: 40px 20px;
+}
+
+.quest-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px;
+}
+
+.btn-new-quest {
+    background-color: #38a169;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-new-quest:hover {
+    background-color: #2f855a;
+    transform: translateY(-2px);
+}
+
+.quest-board {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.quest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #a0aec0;
+    font-size: 1.2rem;
+}
+
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    header p {
+        font-size: 0.9rem;
+    }
+
+    .btn-new-quest {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .preview-title {
+        font-size: 1.2rem;
+    }
+
+    .preview-date {
+        font-size: 0.9rem;
+    }
+}

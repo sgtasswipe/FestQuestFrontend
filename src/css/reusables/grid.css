@@ -1,0 +1,113 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10vw, 1fr));
+    gap: 15px;
+}
+
+.grid-item {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 8.5vw;
+    height: 16vw;
+}
+
+.grid-bottom {
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.grid-bottom h2 {
+    font-size: large;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    margin-bottom: 0;
+}
+
+.grid-bottom h3 {
+    margin-top: 0.3vw;
+    font-size: medium;
+}
+
+.grid-content {
+    display: flex; /* Align image and buttons horizontally */
+    gap: 20px;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.grid-image {
+    position: relative;
+    width: 100%;
+    min-height: 12vw;
+    max-height: 12vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid-right{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.date-text{
+    font-size: small;
+    font-weight: bold;
+    color: var(--color-light-gray);
+}
+
+.date-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 20px;
+}
+
+.date-container button {
+    background-color: var(--color-green); /* Green background */
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.date-container button:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.date-container button:focus {
+    outline: none; /* Remove the default focus outline */
+}
+
+/* Button styling */
+.date-container button {
+    min-width: 120px;
+    border: none;
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+/* Highlight for the "Today" button */
+.date-container button:first-child {
+    font-weight: bold;
+}
+

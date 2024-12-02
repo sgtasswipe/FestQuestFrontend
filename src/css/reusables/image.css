@@ -1,0 +1,10 @@
+img {
+    transition: border .1s linear;
+}
+
+img:hover {
+    border-color: var(--color-medium-blue);
+    border-style: solid;
+    box-sizing: border-box;
+    transition-timing-function: ease-out;
+}

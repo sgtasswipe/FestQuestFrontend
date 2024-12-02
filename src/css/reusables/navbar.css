@@ -1,0 +1,136 @@
+/* navbar.css */
+nav {
+    background-color: var(--color-dark-gray); /* Dark background */
+    overflow: hidden; /* Clear floats */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 5.5vw;
+    max-height: 5.5vw;
+    font-weight: bold;
+    font-size: 1vw;
+}
+
+nav ul {
+    list-style-type: none; /* Remove bullets */
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+    display: flex; /* Horizontal layout */
+    justify-content: flex-end;
+}
+
+nav ul li {
+    flex: 1; /* Equal space for each item */
+    max-width: max-content;
+}
+
+nav ul li a {
+    display: block; /* Make the entire area clickable */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+}
+
+nav ul li a:hover {
+    color: var(--color-medium-blue); /* Dark text on hover */
+}
+
+img {
+    width: 100%;
+    cursor: pointer;
+}
+
+#navbar-logo {
+    border: revert;
+}
+
+#navbar-left-column {
+    max-width: 5vw;
+    margin-left: 1vw;
+}
+
+.anchor-container {
+    gap: 2vw;
+}
+
+#navbar-right-column {
+    margin-right: 3vw;
+}
+
+#navbar-right-column li {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/*2nd version*/
+/*
+nav {
+overflow: hidden;
+display: flex;
+justify-content: space-between;
+align-items: center;
+min-height: 4.5vw;
+max-height: 4.5vw;
+font-weight: bold;
+font-size: 1vw;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    flex: 1;
+}
+
+nav ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    color: var(--color-medium-blue);
+}
+
+img {
+    width: 100%;
+    cursor: pointer;
+}
+
+#navbar-logo {
+    border: revert;
+}
+
+.left-column {
+    min-width: 30%;
+    margin-left: 3vw;
+}
+
+.anchor-container {
+    gap: 2vw;
+}
+
+.middle-column {
+    max-width: 4vw;
+}
+
+.right-column {
+    min-width: 30%;
+    margin-right: 3vw;
+}
+
+.left-column li {
+    display: flex;
+    justify-content: flex-start;
+    min-width: max-content;
+}
+
+.right-column li {
+    display: flex;
+    justify-content: flex-end;
+}
+ */

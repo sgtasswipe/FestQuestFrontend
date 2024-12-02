@@ -1,0 +1,105 @@
+/* Form container styling */
+#add-input-form {
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="checkbox"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+/* Style the checkbox */
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+input:focus {
+    outline: none;
+}
+
+/* Submit button */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Form responsiveness */
+@media (max-width: 768px) {
+    #add-input-form {
+        padding: 20px;
+        width: 90%;
+    }
+}
+#search-movie-form {
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto 20px;
+}
+#edit-movie-form { /* er magen til add-input-form*/
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+}
+#imagePreview {
+    display: none; /* Initially hidden */
+    max-width: 100%; /* Ensure it doesn't exceed the container's width */
+    margin-top: 20px; /* Add some space above the image */
+    border-radius: 10px; /* Optional: Add rounded corners */
+    object-fit: cover;
+}
+
+select {
+    width: calc(100%); /* Match the input width */
+    padding: 10px; /* Same padding as inputs */
+    margin-bottom: 20px; /* Space below the dropdown */
+    border-radius: 6px; /* Match rounded corners */
+    font-size: 16px; /* Consistent font size */
+    appearance: none; /* Remove default dropdown arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor"><path d="M5 8l5 5 5-5H5z" stroke-width="2"/></svg>'); /* Custom arrow */
+    background-repeat: no-repeat; /* Prevent repeating the background */
+    background-position: right 10px center; /* Position the arrow */
+    background-size: 16px; /* Size of the arrow */
+    transition: all 0.3s ease; /* Smooth transition for interactions */
+}
+
+/* Style for select elements on focus */
+select:focus {
+    outline: none; /* Remove default outline */
+}
