@@ -38,7 +38,8 @@
         <textarea id="questDescription" name="questDescription"></textarea>
 
         <input type="hidden" id="questImageUrl" name="questImageUrl" required />
-        <input type="submit" value="Create Quest" />
+        <!-- Ensure the button is type="button" to prevent default form submission -->
+        <button type="button" id="createQuestButton">Create Quest</button>
         <a href="index.html" class="back-link">Back to Quest Board</a>
       </form>
 
