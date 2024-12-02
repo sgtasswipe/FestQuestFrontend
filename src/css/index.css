@@ -1,28 +1,6 @@
-body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #f9fafb;
-    margin: 0;
-    padding: 0;
-}
+@import url('common.css');
+@import url('imageStyles.css');
 
-header {
-    background-color: #2d3748;
-    color: #edf2f7;
-    padding: 20px 0;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-header h1 {
-    margin: 0;
-    font-size: 2rem;
-}
-
-header p {
-    margin: 5px 0 0 0;
-    font-size: 1rem;
-    color: #a0aec0;
-}
 
 main {
     padding: 40px 20px;

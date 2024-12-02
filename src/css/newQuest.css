@@ -1,0 +1,75 @@
+@import url('common.css');
+@import url('imageStyles.css');
+
+.page-container {
+    display: flex;
+    gap: 2rem;
+    max-width: 1600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+form {
+    flex: 2;
+    min-width: 500px;
+}
+
+.end-time-toggle {
+    margin-bottom: 1rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin: 0;
+    cursor: pointer;
+}
+
+.right-panel {
+    flex: 1;
+    min-width: 300px;
+    position: sticky;
+    top: 20px;
+}
+
+.quest-preview {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+    color: #666;
+    text-decoration: none;
+}
+
+@media (max-width: 1024px) {
+    .page-container {
+        flex-direction: column;
+    }
+    
+    form, .image-selection-panel {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .page-container {
+        flex-direction: column;
+    }
+    
+    form, .right-panel {
+        max-width: 100%;
+    }
+}
