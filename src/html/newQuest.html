@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create New Quest - FestQuest</title>
-    <link rel="stylesheet" href="../css/addQuest.css" />
+    <link rel="stylesheet" href="../css/newQuest.css" />
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/imageStyles.css" />
+    <link rel="stylesheet" href="../css/index.css" />
   </head>
   <body>
     <div class="page-container">
@@ -38,7 +41,8 @@
         <textarea id="questDescription" name="questDescription"></textarea>
 
         <input type="hidden" id="questImageUrl" name="questImageUrl" required />
-        <input type="submit" value="Create Quest" />
+        <!-- Ensure the button is type="button" to prevent default form submission -->
+        <button type="button" id="createQuestButton">Create Quest</button>
         <a href="index.html" class="back-link">Back to Quest Board</a>
       </form>
 

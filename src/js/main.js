@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     console.log('FestQuest Frontend Loaded');
     
@@ -11,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     const questForm = document.querySelector('form');
+
     if (questForm) {
         questForm.addEventListener('submit', async function(event) {
             event.preventDefault();
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                const response = await fetch('http://localhost:8080/api/quests/create', {
+                const response = await fetch("http://localhost:8080/questboard/quest", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -44,47 +44,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const showEndTimeCheckbox = document.getElementById('showEndTime');
-    if (showEndTimeCheckbox) {
+
+    if (questForm && showEndTimeCheckbox) {
+        // Set default date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('questStartDate').min = today;
+        document.getElementById('questEndDate').min = today;
+        document.getElementById('questStartDate').value = today;
+
         const endTimeFields = document.getElementById('endTimeFields');
-        
         showEndTimeCheckbox.addEventListener('change', (e) => {
             endTimeFields.style.display = e.target.checked ? 'block' : 'none';
         });
-        
-        questForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const questData = {
-                title: document.getElementById('questTitle').value,
-                description: document.getElementById('questDescription').value,
-                imageUrl: document.getElementById('questImageUrl').value,
-                startTime: `${document.getElementById('questStartDate').value}T${document.getElementById('questStartTime').value}:00`,
-                // Set default end time if not checked
-                endTime: showEndTimeCheckbox.checked 
-                    ? `${document.getElementById('questEndDate').value}T${document.getElementById('questEndTime').value}:00`
-                    : `${document.getElementById('questStartDate').value}T00:00:00`
-            };
-            
-            try {
-                const response = await fetch('http://localhost:8080/api/quests/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(questData)
-                });
 
-                if (response.ok) {
+
+        const createQuestButton = document.getElementById('createQuestButton');
+
+        if (createQuestButton) {
+            createQuestButton.addEventListener('click', async function(event) {
+                event.preventDefault();
+                createQuestButton.disabled = true; // Disable button
+                
+                // Get the date and time values
+                const startDate = document.getElementById('questStartDate').value;
+                const startTime = document.getElementById('questStartTime').value;
+                const endDate = showEndTimeCheckbox.checked ? document.getElementById('questEndDate').value : document.getElementById('questStartDate').value;
+                const endTime = showEndTimeCheckbox.checked ? document.getElementById('questEndTime').value : '23:59:59';
+                
+                const questData = {
+                    title: document.getElementById('questTitle').value,
+                    description: document.getElementById('questDescription').value,
+                    imageUrl: document.getElementById('questImageUrl').value,
+                    startTime: `${startDate}T${startTime}:00`,
+                    endTime: `${endDate}T${endTime}`
+                };
+
+                try {
+                    console.log('Sending quest data:', questData); // Debugging line
+                    const response = await fetch('http://localhost:8080/questboard/quest', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(questData)
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error('Server response:', errorText);
+                        throw new Error(errorText || 'Failed to create quest');
+                    }
+
+                    const result = await response.json();
+                    console.log('Quest created:', result);
                     window.location.href = 'index.html';
-                } else {
-                    console.error('Failed to create quest');
+                    createQuestButton.disabled = false; // Re-enable on success
+                } catch (error) {
+                    console.error('Error creating quest:', error);
+                    createQuestButton.disabled = false; // Re-enable on error
                 }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
+            });
+        }
     }
- // alt herunder er i til billede API'en
+
+    // alt herunder er i til billede API'en
     const UNSPLASH_ACCESS_KEY = "rwTK8Bqlzzqmvf05Slh20N2Z92il3u_NYt5_mhD5V_Q";
     
     if (document.getElementById('searchButton')) {
@@ -162,5 +185,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error fetching images:', error);
             }
         });
-    }
-});
+    }});
+
