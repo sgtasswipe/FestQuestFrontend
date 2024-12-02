@@ -69,7 +69,8 @@ textarea {
     resize: vertical;
 }
 
-input[type="submit"] {
+input[type="submit"],
+#createQuestButton {
     background-color: #3182ce;
     color: white;
     padding: 0.75rem 2rem;
@@ -81,9 +82,16 @@ input[type="submit"] {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover,
+#createQuestButton:hover {
     background-color: #2b6cb0;
     transform: translateY(-2px);
+}
+
+#createQuestButton:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
+    transform: none;
 }
 
 @media (max-width: 600px) {
