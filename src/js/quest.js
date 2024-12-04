@@ -32,8 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 try {
-                    console.log('Sending quest data:', questData); // Debugging line
-                    const response = await fetch('http://localhost:8080/questboard/quest', {
+                    const userId = localStorage.getItem('userId');
+                    if (!userId) {
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    
+                    console.log('Sending quest data:', questData);
+                    const response = await fetch(`http://localhost:8080/questboard/quest?userId=${userId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -50,10 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const result = await response.json();
                     console.log('Quest created:', result);
                     window.location.href = 'index.html';
-                    createQuestButton.disabled = false; // Re-enable on success
+                    createQuestButton.disabled = false; 
                 } catch (error) {
                     console.error('Error creating quest:', error);
-                    createQuestButton.disabled = false; // Re-enable on error
+                    createQuestButton.disabled = false; 
                 }
             });
         }
