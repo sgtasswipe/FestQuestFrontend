@@ -1,6 +1,8 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const questForm = document.getElementById('newQuestForm');
     const showEndTimeCheckbox = document.getElementById('showEndTime');
+    const params = new URLSearchParams(window.location.search);
+    const editQuestId = params.get('edit');
 
     if (questForm && showEndTimeCheckbox) {
         // Set default date
@@ -13,6 +15,20 @@ document.addEventListener('DOMContentLoaded', () => {
         showEndTimeCheckbox.addEventListener('change', (e) => {
             endTimeFields.style.display = e.target.checked ? 'block' : 'none';
         });
+
+        if (editQuestId) {
+            // Load existing quest data
+            try {
+                const response = await fetch(`http://localhost:8080/questboard/quest/${editQuestId}`, {
+                    credentials: 'include'
+                });
+                const quest = await response.json();
+                populateForm(quest);
+                document.getElementById('createQuestButton').textContent = 'Update Quest';
+            } catch (error) {
+                console.error('Error loading quest for editing:', error);
+            }
+        }
 
         const createQuestButton = document.getElementById('createQuestButton');
 
@@ -38,9 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
                     
-                    console.log('Sending quest data:', questData);
-                    const response = await fetch(`http://localhost:8080/questboard/quest?userId=${userId}`, {
-                        method: 'POST',
+                    const url = editQuestId 
+                        ? `http://localhost:8080/questboard/quest/${editQuestId}`
+                        : `http://localhost:8080/questboard/quest?userId=${userId}`;
+                    
+                    const method = editQuestId ? 'PUT' : 'POST';
+                    
+                    const response = await fetch(url, {
+                        method: method,
                         headers: {
                             'Content-Type': 'application/json'
                         },
@@ -65,3 +86,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+function populateForm(quest) {
+    document.getElementById('questTitle').value = quest.title;
+    document.getElementById('questDescription').value = quest.description;
+    document.getElementById('questImageUrl').value = quest.imageUrl;
+    
+    const startDate = new Date(quest.startTime);
+    document.getElementById('questStartDate').value = startDate.toISOString().split('T')[0];
+    document.getElementById('questStartTime').value = startDate.toTimeString().slice(0, 5);
+    
+    if (quest.endTime) {
+        const endDate = new Date(quest.endTime);
+        document.getElementById('showEndTime').checked = true;
+        document.getElementById('endTimeFields').style.display = 'block';
+        document.getElementById('questEndDate').value = endDate.toISOString().split('T')[0];
+        document.getElementById('questEndTime').value = endDate.toTimeString().slice(0, 5);
+    }
+    
+    // Update preview
+    document.getElementById('previewTitle').textContent = quest.title;
+    document.getElementById('selectedImagePreview').style.backgroundImage = `url(${quest.imageUrl})`;
+    document.getElementById('changeImage').style.display = 'block';
+}

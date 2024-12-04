@@ -33,31 +33,7 @@ async function loadQuestBoard() {
     try {
         const quests = await fetchQuests(userId);
         console.log('Fetched quests:', quests);
-        const questGrid = document.querySelector('#quest-grid');
-        
-        if (!questGrid) {
-            console.error('Quest grid not found in DOM');
-            return;
-        }
-        
-        if (!quests || quests.length === 0) {
-            questGrid.innerHTML = '<p class="empty-state">No quests available. Create a new quest to get started!</p>';
-            return;
-        }
-
-        questGrid.innerHTML = quests.map(quest => `
-            <div class="quest-card" data-quest-id="${quest.id}">
-                <img src="${quest.imageUrl}" alt="${quest.title}" class="quest-image">
-                <div class="quest-info">
-                    <h3>${quest.title}</h3>
-                    <p>${quest.description}</p>
-                    <div class="quest-dates">
-                        <time>Starts: ${new Date(quest.startTime).toLocaleString()}</time>
-                        <time>Ends: ${new Date(quest.endTime).toLocaleString()}</time>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+        displayQuests(quests);
     } catch (error) {
         console.error('Error loading quests:', error);
         const questGrid = document.querySelector('#quest-grid');
@@ -156,22 +132,67 @@ async function displayQuests(quests) {
     const questGrid = document.querySelector('#quest-grid');
     if (!questGrid) return;
     
+    questGrid.innerHTML = ''; // Clear existing content
+
     if (!quests || quests.length === 0) {
-        questGrid.innerHTML = '<p class="empty-state">No quests available. Create a new quest to get started!</p>';
+        const emptyState = document.createElement('p');
+        emptyState.className = 'empty-state';
+        emptyState.textContent = 'No quests available. Create a new quest to get started!';
+        questGrid.appendChild(emptyState);
         return;
     }
 
-    questGrid.innerHTML = quests.map(quest => `
-        <div class="quest-card" data-quest-id="${quest.id}">
-            <img src="${quest.imageUrl}" alt="${quest.title}" class="quest-image">
-            <div class="quest-info">
-                <h3>${quest.title}</h3>
-                <p>${quest.description}</p>
-                <div class="quest-dates">
-                    <time>Starts: ${new Date(quest.startTime).toLocaleString()}</time>
-                    <time>Ends: ${new Date(quest.endTime).toLocaleString()}</time>
-                </div>
-            </div>
-        </div>
-    `).join('');
+    quests.forEach(quest => {
+        const questCard = document.createElement('div');
+        questCard.className = 'quest-card';
+        questCard.dataset.questId = quest.id;
+        questCard.style.cursor = 'pointer';
+        questCard.addEventListener('click', () => {
+            window.location.href = `questDetails.html?id=${quest.id}`;
+        });
+
+        const image = document.createElement('img');
+        image.src = quest.imageUrl;
+        image.alt = quest.title;
+        image.className = 'quest-image';
+
+        const info = document.createElement('div');
+        info.className = 'quest-info';
+
+        const title = document.createElement('h3');
+        title.textContent = quest.title;
+
+        const description = document.createElement('p');
+        description.textContent = quest.description;
+
+        const dates = document.createElement('div');
+        dates.className = 'quest-dates';
+        
+        const startTime = new Date(quest.startTime);
+        const formattedStartDate = startTime.toLocaleDateString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false // This forces 24-hour format
+        });
+
+        // Only show duration if there's an end time
+        let timeDisplay = `<time>Starts: ${formattedStartDate}</time>`;
+        if (quest.endTime) {
+            const endTime = new Date(quest.endTime);
+            const durationHours = Math.round((endTime - startTime) / (1000 * 60 * 60));
+            timeDisplay += `<time>Duration: ${durationHours} hours</time>`;
+        }
+
+        dates.innerHTML = timeDisplay;
+
+        info.appendChild(title);
+        info.appendChild(description);
+        info.appendChild(dates);
+        questCard.appendChild(image);
+        questCard.appendChild(info);
+        questGrid.appendChild(questCard);
+    });
 }

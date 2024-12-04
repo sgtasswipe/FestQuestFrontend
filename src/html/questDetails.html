@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Details - FestQuest</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/questDetails.css">
+</head>
+<body>
+    <header class="quest-header">
+        <nav>
+            <button class="btn-back" onclick="history.back()">← Back to Quests</button>
+        </nav>
+    </header>
+    <main>
+        <div class="quest-details">
+            <div class="quest-hero">
+                <img id="quest-image" alt="Quest image">
+                <h1 id="quest-title"></h1>
+            </div>
+            <div class="quest-content">
+                <div class="quest-info">
+                    <div class="quest-metadata">
+                        <div class="time-info">
+                            <h3>Time Details</h3>
+                            <time id="quest-start"></time>
+                            <time id="quest-duration"></time>
+                        </div>
+                        <div class="location-info">
+                            <!-- Reserved for future location information -->
+                        </div>
+                    </div>
+                    <div class="quest-description">
+                        <h3>Description</h3>
+                        <p id="quest-description"></p>
+                    </div>
+                    <div class="quest-actions">
+                        <button id="editQuestBtn" class="btn-edit">Edit Quest</button>
+                        <button id="deleteQuestBtn" class="btn-delete">Delete Quest</button>
+                    </div>
+                </div>
+                <aside class="quest-sidebar">
+                    <!-- Reserved for future features (participants, chat, etc.) -->
+                </aside>
+            </div>
+        </div>
+    </main>
+    <script src="../js/main.js" type="module"></script>
+    <script src="../js/questDetails.js" type="module"></script>
+</body>
+</html>
