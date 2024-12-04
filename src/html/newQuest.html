@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create New Quest - FestQuest</title>
+    <link rel="stylesheet" href="../css/newQuest.css" />
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/imageStyles.css" />
+    <link rel="stylesheet" href="../css/index.css" />
+  </head>
+  <body>
+    <div class="page-container">
+      <form id="newQuestForm">
+        <h2>Create New Quest</h2>
+
+        <label for="questTitle">Quest Title</label>
+        <input type="text" id="questTitle" name="questTitle" required />
+
+        <label for="questStartDate">Start Date</label>
+        <input type="date" id="questStartDate" name="questStartDate" required />
+
+        <label for="questStartTime">Start Time</label>
+        <input type="time" id="questStartTime" name="questStartTime" required />
+
+        <div class="end-time-toggle">
+          <label class="checkbox-label">
+            <input type="checkbox" id="showEndTime" /> Add End Time
+          </label>
+        </div>
+
+        <div id="endTimeFields" style="display: none">
+          <label for="questEndDate">End Date</label>
+          <input type="date" id="questEndDate" name="questEndDate" />
+
+          <label for="questEndTime">End Time</label>
+          <input type="time" id="questEndTime" name="questEndTime" />
+        </div>
+
+        <label for="questDescription">Description</label>
+        <textarea id="questDescription" name="questDescription"></textarea>
+
+        <input type="hidden" id="questImageUrl" name="questImageUrl" required />
+        <!-- Ensure the button is type="button" to prevent default form submission -->
+        <button type="button" id="createQuestButton">Create Quest</button>
+        <a href="index.html" class="back-link">Back to Quest Board</a>
+      </form>
+
+      <div class="right-panel">
+        <div class="quest-preview">
+          <div class="preview-container">
+            <div id="selectedImagePreview" class="preview-image">
+              <div class="preview-header">
+                <h3 id="previewTitle" class="preview-title">Quest Title</h3>
+                <p id="previewDate" class="preview-date">Date</p>
+              </div>
+              <button
+                type="button"
+                id="changeImage"
+                class="change-image-btn"
+                style="display: none"
+              >
+                Replace Image
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="image-selection-panel">
+          <div class="image-search-section">
+            <label for="imageSearch">Search for a cover image</label>
+            <div class="search-container">
+              <input
+                type="text"
+                id="imageSearch"
+                placeholder="Try 'festival', 'concert', 'party'..."
+              />
+              <button type="button" id="searchButton">Search</button>
+            </div>
+            <div id="imageResults" class="image-grid"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/main.js" type="module"></script>
+  </body>
+</html>
