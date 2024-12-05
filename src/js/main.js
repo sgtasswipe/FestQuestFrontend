@@ -31,7 +31,7 @@ async function loadQuestBoard() {
     }
 
     try {
-        const quests = await fetchQuests(userId);
+        const quests = await fetchQuests();
         console.log('Fetched quests:', quests);
         displayQuests(quests);
     } catch (error) {
@@ -43,19 +43,21 @@ async function loadQuestBoard() {
     }
 }
 
-async function fetchQuests(userId) {
-    const response = await fetch(`http://localhost:8080/questboard/quests/${userId}`, {
+async function fetchQuests() {
+    const jwt = localStorage.getItem('jwt');
+    const response = await fetch(`http://localhost:8080/questboard/quests`, {
         credentials: 'include',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization' :  `Bearer ${jwt}`
         }
     });
     
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     return await response.json();
 }
 
