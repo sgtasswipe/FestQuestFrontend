@@ -1,116 +1,74 @@
-document.addEventListener('DOMContentLoaded', () => {
+import UnsplashAPI from './Unsplashedapi.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
     console.log('FestQuest Frontend Loaded');
     
-    // Check if we're on the index page
+    // Setup new quest button regardless of page
+    const newQuestButton = document.querySelector('.btn-new-quest');
+    if (newQuestButton) {
+        console.log('New Quest button found');
+        newQuestButton.addEventListener('click', () => {
+            window.location.href = 'newQuest.html';
+        });
+    }
+
+    // Load quests if we're on the index page
+    if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+        console.log('Loading quest board...');
+        await loadQuestBoard();
+    } else if (window.location.pathname.includes('newQuest.html')) {
+        console.log('Setting up new quest page...');
+        await setupNewQuestPage();
+    }
+});
+
+async function loadQuestBoard() {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+        console.log('No userId found, redirecting to login');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    try {
+        const quests = await fetchQuests(userId);
+        console.log('Fetched quests:', quests);
+        displayQuests(quests);
+    } catch (error) {
+        console.error('Error loading quests:', error);
+        const questGrid = document.querySelector('#quest-grid');
+        if (questGrid) {
+            questGrid.innerHTML = '<p class="empty-state">Failed to load quests. Please try again later.</p>';
+        }
+    }
+}
+
+async function fetchQuests(userId) {
+    const response = await fetch(`http://localhost:8080/questboard/quests/${userId}`, {
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+    
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+}
+
+async function setupNewQuestPage() {
     const newQuestButton = document.querySelector('.btn-new-quest');
     if (newQuestButton) {
         newQuestButton.addEventListener('click', () => {
             window.location.href = 'newQuest.html';
         });
     }
-    
-    const questForm = document.querySelector('form');
 
-    if (questForm) {
-        questForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const questData = {
-                title: document.getElementById('questTitle').value,
-                description: document.getElementById('questDescription').value,
-                imageUrl: document.getElementById('questImageUrl').value,
-                startTime: `${document.getElementById('questStartDate').value}T${document.getElementById('questStartTime').value}:00`,
-                endTime: `${document.getElementById('questEndDate').value}T${document.getElementById('questEndTime').value}:00`
-            };
-
-            try {
-                const response = await fetch("http://localhost:8080/questboard/quest", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(questData)
-                });
-
-                if (response.ok) {
-                    window.location.href = 'index.html';
-                } else {
-                    console.error('Failed to create quest');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
-    }
-
-    const showEndTimeCheckbox = document.getElementById('showEndTime');
-
-    if (questForm && showEndTimeCheckbox) {
-        // Set default date
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('questStartDate').min = today;
-        document.getElementById('questEndDate').min = today;
-        document.getElementById('questStartDate').value = today;
-
-        const endTimeFields = document.getElementById('endTimeFields');
-        showEndTimeCheckbox.addEventListener('change', (e) => {
-            endTimeFields.style.display = e.target.checked ? 'block' : 'none';
-        });
-
-
-        const createQuestButton = document.getElementById('createQuestButton');
-
-        if (createQuestButton) {
-            createQuestButton.addEventListener('click', async function(event) {
-                event.preventDefault();
-                createQuestButton.disabled = true; // Disable button
-                
-                // Get the date and time values
-                const startDate = document.getElementById('questStartDate').value;
-                const startTime = document.getElementById('questStartTime').value;
-                const endDate = showEndTimeCheckbox.checked ? document.getElementById('questEndDate').value : document.getElementById('questStartDate').value;
-                const endTime = showEndTimeCheckbox.checked ? document.getElementById('questEndTime').value : '23:59:59';
-                
-                const questData = {
-                    title: document.getElementById('questTitle').value,
-                    description: document.getElementById('questDescription').value,
-                    imageUrl: document.getElementById('questImageUrl').value,
-                    startTime: `${startDate}T${startTime}:00`,
-                    endTime: `${endDate}T${endTime}`
-                };
-
-                try {
-                    console.log('Sending quest data:', questData); // Debugging line
-                    const response = await fetch('http://localhost:8080/questboard/quest', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(questData)
-                    });
-
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        console.error('Server response:', errorText);
-                        throw new Error(errorText || 'Failed to create quest');
-                    }
-
-                    const result = await response.json();
-                    console.log('Quest created:', result);
-                    window.location.href = 'index.html';
-                    createQuestButton.disabled = false; // Re-enable on success
-                } catch (error) {
-                    console.error('Error creating quest:', error);
-                    createQuestButton.disabled = false; // Re-enable on error
-                }
-            });
-        }
-    }
-
-    // alt herunder er i til billede API'en
-    const UNSPLASH_ACCESS_KEY = "rwTK8Bqlzzqmvf05Slh20N2Z92il3u_NYt5_mhD5V_Q";
-    
     if (document.getElementById('searchButton')) {
+        const unsplashAPI = new UnsplashAPI();
         const searchButton = document.getElementById('searchButton');
         const imageResults = document.getElementById('imageResults');
         const imageUrlInput = document.getElementById('questImageUrl');
@@ -123,23 +81,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const dateInput = document.getElementById('questStartDate');
         const searchInput = document.getElementById('imageSearch');
 
-
         titleInput.addEventListener('input', (e) => {
             previewTitle.textContent = e.target.value || 'Quest Title';
         });
 
-        
         dateInput.addEventListener('input', (e) => {
             previewDate.textContent = e.target.value || 'Date';
         });
 
-    
         changeImageBtn.addEventListener('click', () => {
             imageSelectionPanel.style.display = 'block';
             changeImageBtn.style.display = 'none';
         });
 
-        // Auto-search when typing (with debounce)
         let searchTimeout;
         searchInput.addEventListener('input', (e) => {
             clearTimeout(searchTimeout);
@@ -150,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 500);
         });
 
-        // Handle image selection
         const selectImage = (imageUrl) => {
             imageUrlInput.value = imageUrl;
             preview.style.backgroundImage = `url(${imageUrl})`;
@@ -162,28 +115,84 @@ document.addEventListener('DOMContentLoaded', () => {
             const query = searchInput.value;
             if (!query) return;
 
-            try {
-                const response = await fetch(
-                    `https://api.unsplash.com/search/photos?query=${query}&per_page=21`,
-                    {
-                        headers: {
-                            'Authorization': `Client-ID ${UNSPLASH_ACCESS_KEY}`
-                        }
-                    }
-                );
-                
-                const data = await response.json();
-                imageResults.innerHTML = '';
-                
-                data.results.forEach(image => {
-                    const img = document.createElement('img');
-                    img.src = image.urls.small;
-                    img.addEventListener('click', () => selectImage(image.urls.regular));
-                    imageResults.appendChild(img);
-                });
-            } catch (error) {
-                console.error('Error fetching images:', error);
-            }
+            const images = await unsplashAPI.searchImages(query);
+            imageResults.innerHTML = '';
+            
+            images.forEach(image => {
+                const img = document.createElement('img');
+                img.src = image.urls.small;
+                img.addEventListener('click', () => selectImage(image.urls.regular));
+                imageResults.appendChild(img);
+            });
         });
-    }});
+    }
+}
 
+async function displayQuests(quests) {
+    const questGrid = document.querySelector('#quest-grid');
+    if (!questGrid) return;
+    
+    questGrid.innerHTML = ''; // Clear existing content
+
+    if (!quests || quests.length === 0) {
+        const emptyState = document.createElement('p');
+        emptyState.className = 'empty-state';
+        emptyState.textContent = 'No quests available. Create a new quest to get started!';
+        questGrid.appendChild(emptyState);
+        return;
+    }
+
+    quests.forEach(quest => {
+        const questCard = document.createElement('div');
+        questCard.className = 'quest-card';
+        questCard.dataset.questId = quest.id;
+        questCard.style.cursor = 'pointer';
+        questCard.addEventListener('click', () => {
+            window.location.href = `questDetails.html?id=${quest.id}`;
+        });
+
+        const image = document.createElement('img');
+        image.src = quest.imageUrl;
+        image.alt = quest.title;
+        image.className = 'quest-image';
+
+        const info = document.createElement('div');
+        info.className = 'quest-info';
+
+        const title = document.createElement('h3');
+        title.textContent = quest.title;
+
+        const description = document.createElement('p');
+        description.textContent = quest.description;
+
+        const dates = document.createElement('div');
+        dates.className = 'quest-dates';
+        
+        const startTime = new Date(quest.startTime);
+        const formattedStartDate = startTime.toLocaleDateString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false // This forces 24-hour format
+        });
+
+        // Only show duration if there's an end time
+        let timeDisplay = `<time>Starts: ${formattedStartDate}</time>`;
+        if (quest.endTime) {
+            const endTime = new Date(quest.endTime);
+            const durationHours = Math.round((endTime - startTime) / (1000 * 60 * 60));
+            timeDisplay += `<time>Duration: ${durationHours} hours</time>`;
+        }
+
+        dates.innerHTML = timeDisplay;
+
+        info.appendChild(title);
+        info.appendChild(description);
+        info.appendChild(dates);
+        questCard.appendChild(image);
+        questCard.appendChild(info);
+        questGrid.appendChild(questCard);
+    });
+}

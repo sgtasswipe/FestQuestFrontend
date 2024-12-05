@@ -1,8 +1,9 @@
 @import url('common.css');
 @import url('imageStyles.css');
 
-
 main {
+    max-width: 1400px;
+    margin: 0 auto;
     padding: 40px 20px;
 }
 
@@ -30,44 +31,99 @@ main {
 
 .quest-board {
     background-color: #ffffff;
-    padding: 20px;
+    padding: 30px;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    overflow-x: hidden;
 }
 
-.quest-grid {
+#quest-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
+    padding: 10px;
+    width: 100%;
 }
 
-.empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    color: #a0aec0;
-    font-size: 1.2rem;
+.quest-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
 }
 
+.quest-card:hover {
+    transform: translateY(-4px);
+}
 
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 1.5rem;
+.quest-image {
+    width: 100%;
+    height: 200px; /* Fixed height for images */
+    object-fit: cover; /* Maintain aspect ratio */
+}
+
+.quest-info {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.quest-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+    color: #2d3748;
+}
+
+.quest-info p {
+    margin-bottom: 12px;
+    color: #4a5568;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.quest-dates {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.quest-dates time {
+    font-size: 0.85rem;
+    color: #718096;
+}
+
+.quest-info p {
+    margin-bottom: 20px;
+    color: #4a5568;
+    font-size: 1rem;
+    line-height: 1.5;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.quest-dates {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 0.9rem;
+    color: #718096;
+}
+
+@media (max-width: 900px) {
+    #quest-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
 
-    header p {
-        font-size: 0.9rem;
-    }
-
-    .btn-new-quest {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-    }
-
-    .preview-title {
-        font-size: 1.2rem;
-    }
-
-    .preview-date {
-        font-size: 0.9rem;
+    .quest-card {
+        min-width: 280px;
+        max-width: 280px;
     }
 }
