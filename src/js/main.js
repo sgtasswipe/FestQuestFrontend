@@ -43,20 +43,29 @@ async function loadQuestBoard() {
     }
 }
 
+// main.js - Update fetchQuests function
 async function fetchQuests(userId) {
-    const response = await fetch(`http://localhost:8080/questboard/quests/${userId}`, {
-        credentials: 'include',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+    const jwt = localStorage.getItem('jwt');
+    try {
+        const response = await fetch(`http://localhost:8080/questboard/quests/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            },
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-    });
-    
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching quests:', error);
+        throw error;
     }
-    
-    return await response.json();
 }
 
 async function setupNewQuestPage() {

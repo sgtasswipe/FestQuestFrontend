@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (jwt) {
                 localStorage.setItem('jwt', jwt);
+                localStorage.setItem('userEmail', email);
                 window.location.href = '../html/index.html';
             } else {
                 alert('No token received');
