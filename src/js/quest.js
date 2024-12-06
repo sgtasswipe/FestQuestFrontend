@@ -17,10 +17,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (editQuestId) {
+            const jwt = localStorage.getItem('jwt');
             // Load existing quest data
             try {
                 const response = await fetch(`http://localhost:8080/questboard/quest/${editQuestId}`, {
-                    credentials: 'include'
+                    credentials: 'include',
+                    headers: {
+                        'Authorization' :  `Bearer ${jwt}`
+                    }
                 });
                 const quest = await response.json();
                 populateForm(quest);
@@ -47,23 +51,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                         : `${document.getElementById('questStartDate').value}T23:59:59`
                 };
 
+
                 try {
-                    const userId = localStorage.getItem('userId');
-                    if (!userId) {
-                        window.location.href = 'login.html';
-                        return;
-                    }
-                    
-                    const url = editQuestId 
+                    const jwt = localStorage.getItem('jwt');
+                    console.log("jwt:", jwt)
+                    const url = editQuestId
                         ? `http://localhost:8080/questboard/quest/${editQuestId}`
-                        : `http://localhost:8080/questboard/quest?userId=${userId}`;
-                    
+                        : `http://localhost:8080/questboard/quest`;
+
                     const method = editQuestId ? 'PUT' : 'POST';
-                    
+
                     const response = await fetch(url, {
                         method: method,
+                        credentials: 'include',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${jwt}`  // This should be passed with the correct token
                         },
                         body: JSON.stringify(questData)
                     });
