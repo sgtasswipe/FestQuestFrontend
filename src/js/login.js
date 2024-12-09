@@ -30,12 +30,14 @@ async function handleLogin(event) {
 
                 console.log("Authorization token received:", authorization);
 
+
                 // Store the JWT token in localStorage
                 localStorage.setItem('jwt', authorization);
-
+                
+            console.log(authorization)
                 // Redirect to the index page
                 window.location.href = 'index.html';
-            
+
         } else {
             alert('Invalid login credentials'); // Inform the user
         }
