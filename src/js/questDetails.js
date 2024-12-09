@@ -17,10 +17,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function fetchQuestDetails(questId) {
+    const jwt = localStorage.getItem('jwt');
     const response = await fetch(`http://localhost:8080/questboard/quest/${questId}`, {
         credentials: 'include',
         headers: {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization' :  `Bearer ${jwt}`
         }
     });
 

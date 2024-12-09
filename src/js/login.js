@@ -5,29 +5,28 @@ document.addEventListener("DOMContentLoaded", () => {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
-        try {
-            const response = await fetch(`${baseUrl}/dologin`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
+    try {
+        const response = await fetch('http://localhost:8080/dologin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
 
-            console.log('Full response:', response);
-            const jwt = response.headers.get('Authorization');
-            console.log('JWT Token:', jwt);
 
-            if (jwt) {
-                localStorage.setItem('jwt', jwt);
-                localStorage.setItem('userEmail', email);
-                window.location.href = '../html/index.html';
-            } else {
-                alert('No token received');
+        if (response.ok) {
+            const authorization = response.headers.get('Authorization');
+
+            if (authorization) {
+                console.log(authorization)
+                localStorage.setItem('jwt', authorization);
+                window.location.href = 'index.html';
             }
-        } catch (error) {
-            console.error('Error during login:', error);
-            alert('An error occurred. Please try again later.');
+        } else {
+            alert('Invalid login credentials');
         }
-    });
-});
+    } catch (error) {
+        console.error('Login error:', error);
+    }
+}
