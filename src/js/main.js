@@ -39,7 +39,6 @@ async function loadQuestBoard() {
 async function fetchQuests() {
     const jwt = localStorage.getItem('jwt');
     const response = await fetch(`http://localhost:8080/questboard/quests`, {
-        credentials: 'include',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -52,7 +51,11 @@ async function fetchQuests() {
     }
 
     return await response.json();
-}
+} 
+
+
+
+
 
 async function setupNewQuestPage() {
     const newQuestButton = document.querySelector('.btn-new-quest');
