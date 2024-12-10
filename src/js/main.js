@@ -12,6 +12,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    const logoutButton = document.querySelector('.btn-logout');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('jwt');
+            window.location.href = 'login.html';
+        });
+    }
+
     // Load quests if we're on the index page
     if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
         console.log('Loading quest board...');
@@ -39,22 +47,20 @@ async function loadQuestBoard() {
 async function fetchQuests() {
     const jwt = localStorage.getItem('jwt');
     const response = await fetch(`http://localhost:8080/questboard/quests`, {
+        method: 'GET',
+        credentials: 'include',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization' :  `Bearer ${jwt}`
+            'Authorization': `Bearer ${jwt}`
         }
     });
 
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
-
-    return  response.json();
+    return await response.json();
 }
-
-
-
 
 
 async function setupNewQuestPage() {
