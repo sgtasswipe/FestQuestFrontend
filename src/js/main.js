@@ -2,13 +2,21 @@ import UnsplashAPI from './Unsplashedapi.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('FestQuest Frontend Loaded');
-    
+
     // Setup new quest button regardless of page
     const newQuestButton = document.querySelector('.btn-new-quest');
     if (newQuestButton) {
         console.log('New Quest button found');
         newQuestButton.addEventListener('click', () => {
             window.location.href = 'newQuest.html';
+        });
+    }
+
+    const logoutButton = document.querySelector('.btn-logout');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('jwt');
+            window.location.href = 'login.html';
         });
     }
 
@@ -23,15 +31,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function loadQuestBoard() {
-    const userId = localStorage.getItem('userId');
-    if (!userId) {
-        console.log('No userId found, redirecting to login');
-        window.location.href = 'login.html';
-        return;
-    }
-
     try {
-        const quests = await fetchQuests(userId);
+        const quests = await fetchQuests();
         console.log('Fetched quests:', quests);
         displayQuests(quests);
     } catch (error) {
@@ -43,19 +44,22 @@ async function loadQuestBoard() {
     }
 }
 
-async function fetchQuests(userId) {
-    const response = await fetch(`http://localhost:8080/questboard/quests/${userId}`, {
+async function fetchQuests() {
+    const jwt = localStorage.getItem('jwt');
+    const response = await fetch(`http://localhost:8080/questboard/quests`, {
+        method: 'GET',
         credentials: 'include',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwt}`
         }
     });
-    
+
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     return await response.json();
 }
 
@@ -117,7 +121,7 @@ async function setupNewQuestPage() {
 
             const images = await unsplashAPI.searchImages(query);
             imageResults.innerHTML = '';
-            
+
             images.forEach(image => {
                 const img = document.createElement('img');
                 img.src = image.urls.small;
@@ -131,7 +135,7 @@ async function setupNewQuestPage() {
 async function displayQuests(quests) {
     const questGrid = document.querySelector('#quest-grid');
     if (!questGrid) return;
-    
+
     questGrid.innerHTML = ''; // Clear existing content
 
     if (!quests || quests.length === 0) {
@@ -167,7 +171,7 @@ async function displayQuests(quests) {
 
         const dates = document.createElement('div');
         dates.className = 'quest-dates';
-        
+
         const startTime = new Date(quest.startTime);
         const formattedStartDate = startTime.toLocaleDateString('en-US', {
             weekday: 'short',
