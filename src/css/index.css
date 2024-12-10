@@ -29,6 +29,22 @@ main {
     transform: translateY(-2px);
 }
 
+.btn-logout {
+    background-color: #e53e3e;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-logout:hover {
+    background-color: #c53030;
+    transform: translateY(-2px);
+}
+
 .quest-board {
     background-color: #ffffff;
     padding: 30px;

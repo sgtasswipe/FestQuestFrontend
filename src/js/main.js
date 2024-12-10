@@ -12,6 +12,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    const logoutButton = document.querySelector('.btn-logout');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('jwt');
+            window.location.href = 'login.html';
+        });
+    }
+
     // Load quests if we're on the index page
     if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
         console.log('Loading quest board...');
@@ -36,38 +44,15 @@ async function loadQuestBoard() {
     }
 }
 
-<<<<<<< HEAD
-// main.js - Update fetchQuests function
-async function fetchQuests(userId) {
-    const jwt = localStorage.getItem('jwt');
-    try {
-        const response = await fetch(`http://localhost:8080/questboard/quests/${userId}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${jwt}`
-            },
-            credentials: 'include'
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching quests:', error);
-        throw error;
-    }
-=======
 async function fetchQuests() {
     const jwt = localStorage.getItem('jwt');
     const response = await fetch(`http://localhost:8080/questboard/quests`, {
+        method: 'GET',
+        credentials: 'include',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization' :  `Bearer ${jwt}`
+            'Authorization': `Bearer ${jwt}`
         }
     });
 
@@ -76,11 +61,7 @@ async function fetchQuests() {
     }
 
     return await response.json();
-} 
-
-
-
-
+}
 
 async function setupNewQuestPage() {
     const newQuestButton = document.querySelector('.btn-new-quest');

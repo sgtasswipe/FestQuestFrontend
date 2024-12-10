@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (editQuestId) {
             const jwt = localStorage.getItem('jwt');
-            // Load existing quest data
             try {
                 const response = await fetch(`http://localhost:8080/questboard/quest/${editQuestId}`, {
                     credentials: 'include',
