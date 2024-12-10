@@ -59,9 +59,9 @@ async function fetchQuests() {
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
-
     return await response.json();
 }
+
 
 async function setupNewQuestPage() {
     const newQuestButton = document.querySelector('.btn-new-quest');

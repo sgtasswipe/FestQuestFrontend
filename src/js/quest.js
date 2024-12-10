@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const jwt = localStorage.getItem('jwt');
             try {
                 const response = await fetch(`http://localhost:8080/questboard/quest/${editQuestId}`, {
-                    credentials: 'include',
                     headers: {
                         'Authorization' :  `Bearer ${jwt}`
                     }
@@ -62,7 +61,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     const response = await fetch(url, {
                         method: method,
-                        credentials: 'include',
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${jwt}`  // This should be passed with the correct token
