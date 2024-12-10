@@ -1,0 +1,14 @@
+{
+  "name": "festquestfrontend",
+  "version": "1.0.0",
+  "description": "This is the frontend for the FestQuest application.",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.1"
+  }
+}
