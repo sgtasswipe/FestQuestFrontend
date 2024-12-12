@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const jwt = localStorage.getItem('jwt');
             try {
                 const response = await fetch(`http://localhost:8080/questboard/quest/${editQuestId}`, {
-                    credentials: 'include',
                     headers: {
                         'Authorization' :  `Bearer ${jwt}`
                     }
@@ -34,6 +33,61 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.error('Error loading quest for editing:', error);
             }
         }
+
+        const createQuestButton = document.getElementById('createQuestButton');
+
+        if (createQuestButton) {
+            createQuestButton.addEventListener('click', async function(event) {
+                event.preventDefault();
+                createQuestButton.disabled = true; // Disable button
+                
+                const questData = {
+                    title: document.getElementById('questTitle').value,
+                    description: document.getElementById('questDescription').value,
+                    imageUrl: document.getElementById('questImageUrl').value,
+                    startTime: `${document.getElementById('questStartDate').value}T${document.getElementById('questStartTime').value}:00`,
+                    endTime: showEndTimeCheckbox.checked 
+                        ? `${document.getElementById('questEndDate').value}T${document.getElementById('questEndTime').value}:00`
+                        : `${document.getElementById('questStartDate').value}T23:59:59`
+                };
+
+
+                try {
+                    const jwt = localStorage.getItem('jwt');
+                    console.log("jwt:", jwt)
+                    const url = editQuestId
+                        ? `http://localhost:8080/questboard/quest/${editQuestId}`
+                        : `http://localhost:8080/questboard/quest`;
+
+                    const method = editQuestId ? 'PUT' : 'POST';
+
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${jwt}`  // This should be passed with the correct token
+                        },
+                        body: JSON.stringify(questData)
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error('Server response:', errorText);
+                        throw new Error(errorText || 'Failed to create quest');
+                    }
+
+                    const result = await response.json();
+                    console.log('Quest created:', result);
+                    window.location.href = 'index.html';
+                    createQuestButton.disabled = false; 
+                } catch (error) {
+                    console.error('Error creating quest:', error);
+                    createQuestButton.disabled = false; 
+                }
+            });
+        }
+    }
+});
 
         function populateForm(quest) {
             document.getElementById('questTitle').value = quest.title;
