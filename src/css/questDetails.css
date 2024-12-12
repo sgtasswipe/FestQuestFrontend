@@ -69,6 +69,8 @@
     padding: 1.5rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    padding-bottom: 2em; /* Add space for the counter */
 }
 
 .btn-back {
@@ -122,6 +124,17 @@
 
 .btn-delete:hover {
     background-color: #c53030;
+}
+
+.char-counter {
+    display: block;
+    font-size: 0.9em;
+    color: #444;
+    text-align: right;
+    margin-top: 0.5em;
+    padding: 0.3em;
+    background-color: #f5f5f5;
+    border-radius: 4px;
 }
 
 @media (max-width: 768px) {
