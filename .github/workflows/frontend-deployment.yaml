@@ -1,0 +1,29 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image for frontend
+        run: |
+          docker build -t festquest-frontend .
+
+      - name: Log in to Azure VM and deploy
+        run: |
+          ssh -i ${{ secrets.AZURE_SSH_PRIVATE_KEY }} azureuser@${{ secrets.AZURE_VM_IP }} << 'EOF'
+            cd ~/FestQuestFrontend
+            docker-compose down  # Stop the existing containers if running
+            docker-compose up -d  # Restart with the new image
+          EOF
+        env:
+          AZURE_SSH_PRIVATE_KEY: ${{ secrets.AZURE_SSH_PRIVATE_KEY }}
+          AZURE_VM_IP: ${{ secrets.AZURE_VM_IP }}
