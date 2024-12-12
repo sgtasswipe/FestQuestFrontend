@@ -20,17 +20,6 @@ form {
     margin-bottom: 1rem;
 }
 
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-}
-
-.checkbox-label input[type="checkbox"] {
-    margin: 0;
-    cursor: pointer;
-}
 
 .right-panel {
     flex: 1;

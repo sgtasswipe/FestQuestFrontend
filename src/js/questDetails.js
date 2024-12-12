@@ -32,6 +32,33 @@ document.addEventListener('DOMContentLoaded', async () => {
             questDetails.innerHTML = '<p class="empty-state">Failed to load quest details. Please try again later.</p>';
         }
     }
+
+    const addItemBtn = document.getElementById('addItemBtn');
+    const newItemInput = document.getElementById('newItemInput');
+    const checklistContainer = document.getElementById('checklistItems');
+
+    function addChecklistItem(itemText, isNewItem = false) {
+        const li = document.createElement('li');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        const text = document.createElement('span');
+        text.textContent = itemText;
+        
+        li.appendChild(checkbox);
+        li.appendChild(text);
+        checklistContainer.appendChild(li);
+
+        if (isNewItem) {
+            saveChecklistItems();
+        }
+    }
+
+    async function loadQuestDetails(questId) {
+        const quest = await fetchQuestDetails(questId);
+        if (quest.checklistItems) {
+            quest.checklistItems.forEach(item => addChecklistItem(item));
+        }
+    }
 });
 
 // Functions
