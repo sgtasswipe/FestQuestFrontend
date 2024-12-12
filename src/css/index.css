@@ -52,6 +52,17 @@ main {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
     overflow-x: hidden;
+    min-height: 400px; /* Add minimum height to prevent layout shifts */
+    position: relative; /* Add this for spinner positioning */
+}
+
+.spinner-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
 }
 
 #quest-grid {

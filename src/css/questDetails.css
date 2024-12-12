@@ -2,6 +2,8 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    min-height: 600px; /* Add minimum height for spinner visibility */
+    position: relative; /* For spinner positioning */
 }
 
 .quest-hero {
@@ -29,10 +31,29 @@
     margin: 0;
 }
 
+
 .quest-content {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 2rem;
+    min-height: 400px; 
+    position: relative; 
+}
+
+.spinner-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-size: 1.2rem;
 }
 
 .quest-metadata {

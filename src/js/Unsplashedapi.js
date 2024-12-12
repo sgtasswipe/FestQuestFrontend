@@ -1,8 +1,19 @@
+//
+//         Kun til UnsplashedAPI - Do not touch 
+//
+
+// Variables
 class UnsplashAPI {
     constructor() {
         this.ACCESS_KEY = "rwTK8Bqlzzqmvf05Slh20N2Z92il3u_NYt5_mhD5V_Q";
     }
 
+    // Functions
+    /**
+     * Searches for images based on the query using the Unsplash API.
+     * @param {string} query - The search term.
+     * @returns {Promise<Array>} - A promise that resolves to an array of image results.
+     */
     async searchImages(query) {
         try {
             const response = await fetch(
@@ -22,4 +33,5 @@ class UnsplashAPI {
     }
 }
 
+// Exports
 export default UnsplashAPI;

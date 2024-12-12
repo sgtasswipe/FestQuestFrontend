@@ -6,3 +6,7 @@ dist/
 !.env.project
 !.env.vault
 src/js/config.js
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
