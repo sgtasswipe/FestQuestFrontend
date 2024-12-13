@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signupForm');
-    const baseUrl = "http://localhost:8080";
+    const baseUrl = "http://festquest-backend:8080";
 
     // Functions
     /**
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 alert('Signup successful! Redirecting to login...');
-                window.location.href = '../html/login.html';
+                window.location.href = './login.html';
             } else {
                 console.log("error when creating");
                 const errorMessage = await response.text();
