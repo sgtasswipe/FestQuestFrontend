@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const newQuestButton = document.querySelector('.btn-new-quest');
     const logoutButton = document.querySelector('.btn-logout');
+    const shareButton = document.createElement('button');
+    
 
     // Functions
     /**
@@ -148,6 +150,38 @@ document.addEventListener('DOMContentLoaded', async () => {
             searchInput.addEventListener('input', handleSearchInput);
             searchButton.addEventListener('click', handleSearch);
         }
+    }
+
+    // Create a share button for each quest
+    function createQuestElement(quest) {
+        // Create the Share button
+        const shareButton = document.createElement('button');
+        shareButton.textContent = 'Share';
+        shareButton.addEventListener('click', () => {
+            shareQuest(quest.id);
+        });
+        
+        questElement.appendChild(shareButton);
+    }
+
+    // Add the shareQuest function
+    function shareQuest(questId) {
+        fetch(`http://localhost:8080/questboard/quest/${questId}/generateShareToken`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update the share link to use the correct path
+            const shareLink = `${window.location.origin}/src/html/questDetails.html?shareToken=${data.shareToken}`;
+            alert(`Share this link: ${shareLink}`);
+        })
+        .catch(error => {
+            console.error('Error generating share token:', error);
+        });
     }
 
     /**

@@ -20,23 +20,21 @@ form {
     margin-bottom: 1rem;
 }
 
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-}
-
-.checkbox-label input[type="checkbox"] {
-    margin: 0;
-    cursor: pointer;
-}
 
 .right-panel {
     flex: 1;
     min-width: 300px;
     position: sticky;
     top: 20px;
+}
+
+.quest-description {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    padding-bottom: 2em; /* Add space for the counter */
 }
 
 .quest-preview {

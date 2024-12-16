@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../css/imageStyles.css" />
     <link rel="stylesheet" href="../css/index.css" />
     <link rel="stylesheet" href="../css/spinner.css" />
+  
   </head>
   <body>
     <header class="quest-header">
@@ -17,17 +18,21 @@
       <p>Plan your festival adventures</p>
     </header>
     <main>
-      <div class="quest-controls">
-        <button class="btn-new-quest">New Quest</button>
-        <button class="btn-logout">Logout</button>
-      </div>
-      <div class="quest-board">
-        <div id="quest-grid">
-          <!-- Spinner will be injected here by main.js -->
+      <!-- Navigation for controls -->
+      <nav class="quest-controls" role="navigation" aria-label="Quest board controls">
+        <button class="btn-new-quest" aria-label="Create a new quest">New Quest</button>
+        <button class="btn-logout" aria-label="Log out">Logout</button>
+      </nav>
+
+      <!-- Quest board section -->
+      <section class="quest-board" aria-labelledby="quest-board-title">
+        <h2 id="quest-board-title" class="sr-only">Available Quests</h2>
+        <div id="quest-grid" aria-live="polite" aria-busy="true">
+          <!-- Spinner is dynamically injected via JavaScript -->
         </div>
-      </div>
+      </section>
     </main>
-    <script src="../js/main.js" type="module"></script>
-    <script src="../js/quest.js" type="module"></script>
+    <script src="../js/main.js" type="module" nonce="${cspNonce}""></script>
+    <script src="../js/quest.js" type="module" nonce="${cspNonce}"></script>
   </body>
 </html>
