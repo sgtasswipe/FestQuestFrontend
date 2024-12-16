@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "This is the frontend for the FestQuest application.",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "live-server src/"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

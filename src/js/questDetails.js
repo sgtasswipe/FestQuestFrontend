@@ -4,59 +4,78 @@ document.addEventListener('DOMContentLoaded', async () => {
     const questId = params.get('id');
     const questDetails = document.querySelector('.quest-details'); // Changed from questContent
 
-    if (!questId) {
-        window.location.href = 'index.html';
-        return;
-    }
+    const urlParams = new URLSearchParams(window.location.search);
+    const shareToken = urlParams.get('shareToken');
 
-    // Show loading spinner
-    if (questDetails) {
-        const originalContent = questDetails.innerHTML;
-        questDetails.innerHTML = `
-            <div class="spinner-container">
-                <div class="spinner" role="status" aria-label="Loading">
-                    <div class="double-bounce1"></div>
-                    <div class="double-bounce2"></div>
+    if (shareToken) {
+        fetch(`http://localhost:8080/questboard/shared/${shareToken}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            displayQuestDetails(data);
+        })
+        .catch(error => {
+            console.error('Error fetching quest:', error);
+        });
+    } else {
+        if (!questId) {
+            window.location.href = 'index.html';
+            return;
+        }
+
+        // Show loading spinner
+        if (questDetails) {
+            const originalContent = questDetails.innerHTML;
+            questDetails.innerHTML = `
+                <div class="spinner-container">
+                    <div class="spinner" role="status" aria-label="Loading">
+                        <div class="double-bounce1"></div>
+                        <div class="double-bounce2"></div>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
 
-        try {
+            try {
+                const quest = await fetchQuestDetails(questId);
+                // Restore the original structure and populate it
+                questDetails.innerHTML = originalContent;
+                displayQuestDetails(quest);
+                setupActionButtons(quest);
+            } catch (error) {
+                console.error('Error loading quest details:', error);
+                questDetails.innerHTML = '<p class="empty-state">Failed to load quest details. Please try again later.</p>';
+            }
+        }
+
+        const addItemBtn = document.getElementById('addItemBtn');
+        const newItemInput = document.getElementById('newItemInput');
+        const checklistContainer = document.getElementById('checklistItems');
+
+        function addChecklistItem(itemText, isNewItem = false) {
+            const li = document.createElement('li');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            const text = document.createElement('span');
+            text.textContent = itemText;
+            
+            li.appendChild(checkbox);
+            li.appendChild(text);
+            checklistContainer.appendChild(li);
+
+            if (isNewItem) {
+                saveChecklistItems();
+            }
+        }
+
+        async function loadQuestDetails(questId) {
             const quest = await fetchQuestDetails(questId);
-            // Restore the original structure and populate it
-            questDetails.innerHTML = originalContent;
-            displayQuestDetails(quest);
-            setupActionButtons(quest);
-        } catch (error) {
-            console.error('Error loading quest details:', error);
-            questDetails.innerHTML = '<p class="empty-state">Failed to load quest details. Please try again later.</p>';
-        }
-    }
-
-    const addItemBtn = document.getElementById('addItemBtn');
-    const newItemInput = document.getElementById('newItemInput');
-    const checklistContainer = document.getElementById('checklistItems');
-
-    function addChecklistItem(itemText, isNewItem = false) {
-        const li = document.createElement('li');
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        const text = document.createElement('span');
-        text.textContent = itemText;
-        
-        li.appendChild(checkbox);
-        li.appendChild(text);
-        checklistContainer.appendChild(li);
-
-        if (isNewItem) {
-            saveChecklistItems();
-        }
-    }
-
-    async function loadQuestDetails(questId) {
-        const quest = await fetchQuestDetails(questId);
-        if (quest.checklistItems) {
-            quest.checklistItems.forEach(item => addChecklistItem(item));
+            if (quest.checklistItems) {
+                quest.checklistItems.forEach(item => addChecklistItem(item));
+            }
         }
     }
 });
@@ -112,6 +131,19 @@ function displayQuestDetails(quest) {
         const durationHours = Math.round((endTime - startTime) / (1000 * 60 * 60));
         document.getElementById('quest-duration').textContent = `Duration: ${durationHours} hours`;
     }
+
+    // Create the Share button
+    const shareButton = document.createElement('button');
+    shareButton.textContent = 'Share';
+    shareButton.addEventListener('click', () => {
+        shareQuest(quest.id);
+    });
+
+    // Append the Share button to the action buttons container
+    const actionsContainer = document.getElementById('actionButtons');
+    if (actionsContainer) {
+        actionsContainer.appendChild(shareButton);
+    }
 }
 
 /**
@@ -122,8 +154,10 @@ function setupActionButtons(quest) {
     const editBtn = document.getElementById('editQuestBtn');
     const deleteBtn = document.getElementById('deleteQuestBtn');
 
-    editBtn.addEventListener('click', () => {
-        window.location.href = `newQuest.html?edit=${quest.id}`;
+    editBtn.setAttribute('data-href', `newQuest.html?edit=${quest.id}`);
+    editBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = editBtn.getAttribute('data-href');
     });
 
     deleteBtn.addEventListener('click', async () => {
@@ -133,7 +167,8 @@ function setupActionButtons(quest) {
                     method: 'DELETE',
                     credentials: 'include',
                     headers: {
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
                     }
                 });
 
@@ -148,5 +183,56 @@ function setupActionButtons(quest) {
                 alert('Failed to delete quest: ' + error.message);
             }
         }
+    });
+}
+
+/**
+ * Shows a custom modal dialog for sharing
+ * @param {string} shareLink - The link to share
+ */
+function showShareDialog(shareLink) {
+    const dialog = document.createElement('div');
+    dialog.className = 'share-dialog';
+    dialog.innerHTML = `
+        <div class="share-content">
+            <h3>Share Quest</h3>
+            <p>Copy this link to share:</p>
+            <input type="text" value="${shareLink}" readonly>
+            <button class="copy-button">Copy Link</button>
+            <button class="close-button">Close</button>
+        </div>
+    `;
+    document.body.appendChild(dialog);
+
+    const copyButton = dialog.querySelector('.copy-button');
+    const closeButton = dialog.querySelector('.close-button');
+    const input = dialog.querySelector('input');
+
+    copyButton.addEventListener('click', () => {
+        input.select();
+        document.execCommand('copy');
+    });
+
+    closeButton.addEventListener('click', () => {
+        dialog.remove();
+    });
+}
+
+// Update the shareQuest function to use the custom dialog
+function shareQuest(questId) {
+    fetch(`http://localhost:8080/questboard/quest/${questId}/generateShareToken`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const shareLink = `${window.location.origin}/src/html/questDetails.html?shareToken=${data.shareToken}`;
+        showShareDialog(shareLink);
+    })
+    .catch(error => {
+        console.error('Error generating share token:', error);
     });
 }
