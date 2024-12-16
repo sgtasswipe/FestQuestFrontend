@@ -154,6 +154,7 @@ function setupActionButtons(quest) {
     const editBtn = document.getElementById('editQuestBtn');
     const deleteBtn = document.getElementById('deleteQuestBtn');
 
+
     editBtn.setAttribute('data-href', `newQuest.html?edit=${quest.id}`);
     editBtn.addEventListener('click', (e) => {
         e.preventDefault();
