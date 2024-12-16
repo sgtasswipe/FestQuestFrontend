@@ -1,5 +1,5 @@
 // Variables
-import {setupSubQuestBtn} from "./subQuest.js";
+import {setupSubQuestBtn, loadSubQuests} from "./subQuest.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const quest = await fetchQuestDetails(questId);
                 // Restore the original structure and populate it
                 questDetails.innerHTML = originalContent;
+                await loadSubQuests();
                 displayQuestDetails(quest);
                 setupActionButtons(quest);
                 setupSubQuestBtn();
