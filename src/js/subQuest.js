@@ -5,6 +5,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const questId = urlParams.get('id');
 const baseUrl = `http://localhost:8080/quest/${questId}`;
 let addBudgetField;
+let subQuestCard = document.createElement('div');
 
 function setupSubQuestBtn() {
     const addSubQuestBtn = document.getElementById('addSubquestBtn');
@@ -13,6 +14,120 @@ function setupSubQuestBtn() {
         showSubQuestDialog();
     })
 }
+
+// hover functions //
+function showDeleteButtonOnHover(subQuest, titleWrapper, subQuestCard) {
+    let deleteButton = titleWrapper.querySelector(".delete-button");
+    if (!deleteButton) {
+        deleteButton = document.createElement("button")
+        deleteButton.className = "delete-button"
+        deleteButton.style.background = "red"
+        deleteButton.style.display = 'flex';
+        deleteButton.innerHTML = "delete";
+        deleteButton.position= "absolute"
+        deleteButton.style.cursor = "pointer"
+        deleteButton.style.top ="3px"
+        deleteButton.style.right = "3px"
+        titleWrapper.appendChild(deleteButton)
+        deleteButton.onclick = () => deleteSubQuest(subQuest.id, subQuestCard);
+    }
+}
+
+function hideDeleteButtonOnHover(titleWrapper) {
+    const deleteButton = titleWrapper.querySelector(".delete-button")
+    titleWrapper.removeChild(deleteButton)
+}
+function showUpdateButtonOnHover(subQuest, titleWrapper, subQuestCard){
+    let updateButton = titleWrapper.querySelector(".update-button");
+    if (!updateButton){
+        updateButton = document.createElement("button")
+        updateButton.className = "update-button"
+        updateButton.style.background = "blue"
+        updateButton.style.display = 'flex';
+        updateButton.innerHTML = "update";
+        updateButton.position= "absolute"
+        updateButton.style.cursor = "pointer"
+        updateButton.style.top ="15px"
+        updateButton.style.right = "15px"
+        titleWrapper.appendChild(updateButton)
+        updateButton.onclick = () => showUpdateDialog(subQuest, subQuestCard);
+    }
+}
+
+function hideUpdateButtonOnHover(titleWrapper) {
+    const updateButton = titleWrapper.querySelector(".update-button")
+    titleWrapper.removeChild(updateButton)
+}
+
+function showUpdateDialog(subQuest, subQuestCard) {
+    const dialog = document.createElement('div');
+    dialog.className = 'update-sub-quest-dialog';
+    dialog.innerHTML = `
+        <div class="update-sub-quest-content">
+            <form id="update-sub-quest-form">
+                <h3>Update Sub Quest</h3>
+                <label for="update-sub-quest-title">Sub Quest Title</label>
+                <input type="text" id="update-sub-quest-title" value="${subQuest.title}" required>
+
+                <p>Budget: ${subQuest.budget} ,-</p>
+
+                <div class="button-group">
+                    <button type="button" class="close-button">Close</button>
+                    <button type="button" id="update-sub-quest-button">Update Sub Quest</button>
+                </div>
+            </form>
+        </div>
+    `;
+
+    document.body.appendChild(dialog);
+
+    const closeButton = dialog.querySelector('.close-button');
+    const updateButton = dialog.querySelector('#update-sub-quest-button');
+
+    // Close dialog
+    closeButton.addEventListener('click', () => {
+        dialog.remove();
+    });
+
+    // Handle update logic
+    updateButton.addEventListener('click', async () => {
+        const updatedSubQuest = {
+            ...subQuest,
+            title: document.getElementById('update-sub-quest-title').value
+        };
+
+        try {
+            // Call API to update sub quest
+            await updateSubQuest(updatedSubQuest);
+
+            // Update the local UI
+            updateSubQuestUI(subQuestCard, updatedSubQuest);
+
+            dialog.remove();
+        } catch (error) {
+            console.error('Failed to update sub quest:', error);
+            alert('Failed to update sub quest. Please try again.');
+        }
+    });
+}
+
+function updateSubQuestUI(subQuestCard, updatedSubQuest) {
+    const titleElement = subQuestCard.querySelector('h3');
+    const budgetElement = subQuestCard.querySelector('p');
+
+    titleElement.textContent = updatedSubQuest.title;
+
+    if (budgetElement) {
+        budgetElement.textContent = `Budget: ${updatedSubQuest.budget} ,-`;
+    } else {
+        const newBudgetElement = document.createElement('p');
+        newBudgetElement.textContent = `Budget: ${updatedSubQuest.budget} ,-`;
+        subQuestCard.querySelector('.sub-quest-title-wrapper').appendChild(newBudgetElement);
+    }
+}
+
+
+
 
 
 function showSubQuestDialog() {
@@ -106,6 +221,44 @@ async function addSubQuest(subQuestData) {
     }
 }
 
+async function deleteSubQuest(subQuestId, subQuestCard) {
+    try {
+        const deleteSubQuestUrl = baseUrl + '/sub-quest/' + subQuestId;
+        const response = await fetch(deleteSubQuestUrl, {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            }
+        });
+        subQuestCard.remove();
+        console.log('Sub quest deleted successfully:', response.status);
+    } catch (error) {
+        console.error('Error deleting sub quest: ', error);
+    }
+}
+
+async function updateSubQuest(updatedSubQuest) {
+    try {
+        const deleteSubQuestUrl = baseUrl + '/sub-quest/' + updatedSubQuest.id;
+        const response = await fetch(deleteSubQuestUrl, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            },
+            body: JSON.stringify(updatedSubQuest)
+        });
+        console.log('Sub quest updated successfully:', response.status);
+    } catch (error) {
+        console.error('Error updating sub quest: ', error);
+    }
+}
+
 function appendNewSubQuest(subQuest) {
     const subQuestGrid = document.querySelector('#sub-quest-grid');
     if (!subQuestGrid) return;
@@ -116,7 +269,7 @@ function appendNewSubQuest(subQuest) {
 
     debugger
     // Create the new subquest card
-    const subQuestCard = document.createElement('div');
+    subQuestCard = document.createElement('div');
     subQuestCard.className = 'sub-quest-card';
     subQuestCard.dataset.subQuestId = subQuest.id;
 
@@ -126,8 +279,8 @@ function appendNewSubQuest(subQuest) {
     const title = document.createElement('h3');
     title.textContent = subQuest.title;
 
-    const budget = subQuest.budget > 0
-        ? Object.assign(document.createElement('p'), { textContent: `Budget: ${subQuest.budget} ,-` })
+    let budget = subQuest.budget > 0
+        ? Object.assign(document.createElement('p'), { textContent: `Budget: ${subQuest.budget} ,-`})
         : null;
 
     titleWrapper.appendChild(title);
@@ -146,9 +299,8 @@ function appendNewSubQuest(subQuest) {
     subQuestGrid.appendChild(subQuestCard);
 
 
-    console.log(`Subquest "${subQuest.title}" added to the UI with an "Add Duty" button.`);
+    console.log(`Subquest ${subQuest.title} added to the UI with an "Add Duty" button.`);
 }
-
 
 function generateTemporaryId() {
     return `temp-${Date.now()}`;
@@ -166,7 +318,7 @@ async function getSubQuests() {
                 'Authorization' :  `Bearer ${jwt}`
             }
         });
-        return response.json();
+      return response.json();
     } catch (error) {
         console.error('Error getting quests: ', error);
     }
@@ -193,6 +345,11 @@ async function displaySubQuests(subQuests) {
 
         const titleWrapper = document.createElement('div');
         titleWrapper.className = 'sub-quest-title-wrapper';
+        titleWrapper.addEventListener("mouseenter", () => showDeleteButtonOnHover(subQuest, titleWrapper, subQuestCard))
+        titleWrapper.addEventListener("mouseleave",  () => hideDeleteButtonOnHover(titleWrapper))
+
+        titleWrapper.addEventListener("mouseenter", () => showUpdateButtonOnHover(subQuest, titleWrapper, subQuestCard))
+        titleWrapper.addEventListener("mouseleave",  () => hideUpdateButtonOnHover(titleWrapper))
 
         const title = document.createElement('h3');
         title.textContent = subQuest.title;
