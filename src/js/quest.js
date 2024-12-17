@@ -116,7 +116,7 @@ async function handleCreateOrUpdateQuest(event) {
         }
 
         const result = await response.json();
-        window.location.href = 'index.html';
+        window.location.href = 'questboard.html';
         createQuestButton.disabled = false; 
     } catch (error) {
         console.error('Error creating quest:', error);

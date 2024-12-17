@@ -1,38 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quest Board - FestQuest</title>
-    <link rel="icon" type="image/png" href="../resources/favicon.png" />
-    <link rel="stylesheet" href="../css/newQuest.css" />
-    <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/imageStyles.css" />
-    <link rel="stylesheet" href="../css/index.css" />
-    <link rel="stylesheet" href="../css/spinner.css" />
-  
-  </head>
-  <body>
-    <header class="quest-header">
-      <h1>Quest Board</h1>
-      <p>Plan your festival adventures</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to FestQuest</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+    <header>
+        <h1>FestQuest</h1>
+        <p>Your Ultimate Event Planning Tool</p>
     </header>
-    <main>
-      <!-- Navigation for controls -->
-      <nav class="quest-controls" role="navigation" aria-label="Quest board controls">
-        <button class="btn-new-quest" aria-label="Create a new quest">New Quest</button>
-        <button class="btn-logout" aria-label="Log out">Logout</button>
-      </nav>
-
-      <!-- Quest board section -->
-      <section class="quest-board" aria-labelledby="quest-board-title">
-        <h2 id="quest-board-title" class="sr-only">Available Quests</h2>
-        <div id="quest-grid" aria-live="polite" aria-busy="true">
-          <!-- Spinner is dynamically injected via JavaScript -->
-        </div>
-      </section>
-    </main>
-    <script src="../js/main.js" type="module" nonce="${cspNonce}""></script>
-    <script src="../js/quest.js" type="module" nonce="${cspNonce}"></script>
-  </body>
+          <div class="landing-page">
+            <header>
+              <div class="container">
+                <a href="#" class="logo"><img src="../resources/favicon.ico" alt="Logo"></a>
+                <ul class="links">
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="login.html">Login</a></li>
+                </ul>
+              </div>
+            </header>
+            <div class="content">
+              <div class="container">
+                <div class="info">
+                  <h1>Looking to Plan Your Next Event?</h1>
+                  <p>FestQuest makes it easy to organize your events effortlessly.</p>
+                  <p>Share your events with friends and acquaintances.</p>
+                  <p>Start by signing up today using the button below.</p>
+                  <button onclick="location.href='signup.html'">Sign Up</button>
+                </div>
+                <div class="image">
+                  <img src="https://i.postimg.cc/65QxYYzh/001234.png">
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Landing Page -->
+    <footer>
+        <p>&copy; 2024 FestQuest. All rights reserved.</p>
+    </footer>
+    <script src="../js/main.js" type="module"></script>
+    <script src="../js/quest.js" type="module"></script>
+</body>
 </html>
+
