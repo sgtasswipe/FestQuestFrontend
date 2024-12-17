@@ -64,7 +64,7 @@ function showSubQuestDialog() {
         createQuestButton.addEventListener('click', async () => {
             const subQuestData = {
                 title: document.getElementById('sub-quest-title').value,
-                budget: showAddBudget.checked ? `${document.getElementById('budget').value}` : '0',
+                budget: 0,
                 dutyList: [] // Optional, if duties are relevant
             };
 
@@ -102,7 +102,6 @@ async function addSubQuest(subQuestData) {
 
         // Use subQuestData to update the UI directly
         appendNewSubQuest({ ...subQuestData, id: generateTemporaryId() });
-
     } catch (error) {
         console.error('Error creating sub quest:', error);
     }
@@ -116,6 +115,7 @@ function appendNewSubQuest(subQuest) {
     const emptyState = subQuestGrid.querySelector('.empty-state');
     if (emptyState) emptyState.remove();
 
+    debugger
     // Create the new subquest card
     const subQuestCard = document.createElement('div');
     subQuestCard.className = 'sub-quest-card';
@@ -205,7 +205,6 @@ async function displaySubQuests(subQuests) {
         if (budget) titleWrapper.appendChild(budget);
         subQuestCard.appendChild(titleWrapper);
         subQuestGrid.appendChild(subQuestCard);
-
         return loadDuties(subQuest, subQuestCard);
     });
 

@@ -258,7 +258,7 @@ button.secondary:hover {
 }
 
 /* Share Dialog */
-.share-dialog, .add-sub-quest-dialog, .add-duty-dialog {
+.share-dialog, .add-sub-quest-dialog, .add-duty-dialog, .update-sub-quest-dialog, .update-duty-dialog {
     position: fixed;
     top: 0;
     left: 0;

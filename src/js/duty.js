@@ -38,12 +38,17 @@ function displayDuties(duties, subQuestCard, subQuest) {
 
         const titleWrapper = document.createElement('div');
         titleWrapper.className = 'duty-title-wrapper';
+        titleWrapper.addEventListener('mouseenter', () => showDeleteButtonOnHover(subQuest.id, duty, titleWrapper, dutyCard));
+        titleWrapper.addEventListener('mouseleave', () => hideDeleteButtonOnHover(titleWrapper));
+
+        titleWrapper.addEventListener('mouseenter', () => showUpdateButtonOnHover(subQuest.id, duty, titleWrapper, dutyCard));
+        titleWrapper.addEventListener('mouseleave', () => hideUpdateButtonOnHover(titleWrapper));
 
         const title = document.createElement('p');
         title.textContent = duty.title;
 
         const price = duty.price > 0
-            ? Object.assign(document.createElement('p'), { textContent: `${duty.price} ,-` })
+            ? Object.assign(document.createElement('p'), { textContent: `${duty.price} 💸` })
             : null;
 
         titleWrapper.appendChild(title);
@@ -130,48 +135,78 @@ function showDutyDialog(subQuest) {
             };
 
             await addDuty(subQuest, dutyData);
-            appendNewDuty(subQuest.id, dutyData);
             dialog.remove();
         });
 
     }
 }
 
-function appendNewDuty(subQuestId, dutyData) {
-    const subQuestCard = document.querySelector(`[data-sub-quest-id="${subQuestId}"]`);
-    if (!subQuestCard) {
-        console.error('Sub quest card not found for ID:', subQuestId);
-        return;
-    }
-
-    const dutyCardWrapper = subQuestCard.querySelector('.duty-card-wrapper');
-    if (!dutyCardWrapper) {
-        console.error('Duty card wrapper not found for sub quest ID:', subQuestId);
-        return;
-    }
-
-    // Create the new duty card
-    const dutyCard = document.createElement('div');
-    dutyCard.className = 'duty-card';
-    dutyCard.dataset.dutyId = dutyData.id;
-
-    const titleWrapper = document.createElement('div');
-    titleWrapper.className = 'duty-title-wrapper';
-
-    const title = document.createElement('p');
-    title.textContent = dutyData.title;
-
-    const price = dutyData.price > 0
-        ? Object.assign(document.createElement('p'), { textContent: `${dutyData.price} ,-` })
-        : null;
-
-    titleWrapper.appendChild(title);
-    if (price) titleWrapper.appendChild(price);
-    dutyCard.appendChild(titleWrapper);
-
-    // Append the new duty card to the wrapper
-    dutyCardWrapper.appendChild(dutyCard);
+function generateTemporaryId() {
+    return `temp-${Date.now()}`;
 }
+
+function appendNewDuty(subQuest, dutyData) {
+    const subQuestCard = document.querySelector(`[data-sub-quest-id="${subQuest.id}"]`);
+    if (!subQuestCard) {
+        console.error('Sub quest card not found for ID:', subQuest.id);
+        return;
+    }
+
+    let dutyCardWrapper = subQuestCard.querySelector('.duty-card-wrapper');
+    if (!dutyCardWrapper) {
+        console.warn('Duty card wrapper not found, creating one.');
+        dutyCardWrapper = document.createElement('div');
+        dutyCardWrapper.className = 'duty-card-wrapper';
+        subQuestCard.appendChild(dutyCardWrapper);
+    }
+
+    // Check if duty already exists
+    let existingDutyCard = dutyCardWrapper.querySelector(`[data-duty-id="${dutyData.id}"]`);
+
+    if (existingDutyCard) {
+        console.log(`Updating existing duty with ID: ${dutyData.id}`);
+
+        // Update the title and price of the existing duty
+        const titleElement = existingDutyCard.querySelector('.duty-title-wrapper p:first-child');
+        const priceElement = existingDutyCard.querySelector('.duty-title-wrapper p:last-child');
+
+        titleElement.textContent = dutyData.title;
+
+        if (priceElement) {
+            priceElement.textContent = `${dutyData.price} ,-`;
+        } else if (dutyData.price > 0) {
+            const newPriceElement = document.createElement('p');
+            newPriceElement.textContent = `${dutyData.price} ,-`;
+            existingDutyCard.querySelector('.duty-title-wrapper').appendChild(newPriceElement);
+        }
+
+    } else {
+        console.log(`Appending new duty with ID: ${dutyData.id}`);
+
+        // Create the new duty card
+        const dutyCard = document.createElement('div');
+        dutyCard.className = 'duty-card';
+        dutyCard.dataset.dutyId = dutyData.id;
+
+        const titleWrapper = document.createElement('div');
+        titleWrapper.className = 'duty-title-wrapper';
+
+        const title = document.createElement('p');
+        title.textContent = dutyData.title;
+
+        const price = dutyData.price > 0
+            ? Object.assign(document.createElement('p'), { textContent: `${dutyData.price} ,-` })
+            : null;
+
+        titleWrapper.appendChild(title);
+        if (price) titleWrapper.appendChild(price);
+        dutyCard.appendChild(titleWrapper);
+
+        // Append the new duty card to the wrapper
+        dutyCardWrapper.appendChild(dutyCard);
+    }
+}
+
 
 function toggleAddPriceCheckbox(e) {
     addPriceField.style.display = e.target.checked ? 'block' : 'none';
@@ -196,6 +231,8 @@ async function addDuty(subQuest, dutyData) {
             console.error('Server response error:', errorText);
             throw new Error(errorText || 'Failed to add duty');
         }
+
+        appendNewDuty({subQuest, ...dutyData});
     } catch (error) {
         console.error('Error creating duty:', error);
     }
