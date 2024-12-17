@@ -19,31 +19,30 @@ function showSubQuestDialog() {
     const dialog = document.createElement('div');
 
     dialog.className = 'add-sub-quest-dialog';
-    dialog.innerHTML = `
+    dialog.innerHTML =`
         <div class="new-sub-quest-content">
             <form id="new-sub-quest-form">
                 <h3>Add Sub Quest</h3>
                 <label for="sub-quest-title">Sub Quest Title</label>
                 <input type="text" id="sub-quest-title" name="sub-quest-title" required>
-                
-                <div class="add-budget-toggle">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="show-add-budget" /> Add Budget
-                    </label>
-                </div>
-                
-                <div id="add-budget-field" style="display: none">
-                    <label for="budget">Budget</label>
-                    <input type="number" id="budget" name="budget" />
-                </div>
-                <button class="close-button">Close</button>
-                <button type="button" id="create-sub-quest-button">Create Sub Quest</button>
-            </form>
-        </div>
-    `;
-    document.body.appendChild(dialog);
 
-    /////////////////////////////////////////
+                    <div class="add-budget-toggle">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="show-add-budget" /> Add Budget
+                        </label>
+                    </div>
+
+                    <div id="add-budget-field" style="display: none">
+                        <label for="budget">Budget</label>
+                        <input type="number" id="budget" name="budget" />
+                    </div>
+                    <button class="close-button">Close</button>
+                    <button type="button" id="create-sub-quest-button">Create Sub Quest</button>
+            </form>
+        </div>`;
+document.body.appendChild(dialog);
+
+/////////////////////////////////////////
 
     const createQuestButton = document.getElementById('create-sub-quest-button');
     let showAddBudget = document.getElementById('show-add-budget');
@@ -146,6 +145,7 @@ function appendNewSubQuest(subQuest) {
     // Append the new subquest card to the grid
     subQuestGrid.appendChild(subQuestCard);
 
+
     console.log(`Subquest "${subQuest.title}" added to the UI with an "Add Duty" button.`);
 }
 
@@ -233,6 +233,11 @@ async function loadSubQuests() {
             subQuestGrid.innerHTML = '<p class="empty-state">Failed to load sub quests. Please try again later.</p>';
         }
     }
+}
+
+async function calculateBudget(subQuest) {
+    const duties = await loadDuties(subQuest);
+    return duties.reduce((sum, duty) => sum + duty.cost, 0);
 }
 
 export {setupSubQuestBtn, loadSubQuests}

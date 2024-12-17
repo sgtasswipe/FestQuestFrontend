@@ -59,6 +59,7 @@ function displayDuties(duties, subQuestCard, subQuest) {
 
     subQuestCard.appendChild(dutyCardWrapper);
     subQuestCard.appendChild(createAddDutyCard(subQuest))
+
 }
 
 function createAddDutyCard(subQuest) {
@@ -237,5 +238,180 @@ async function addDuty(subQuest, dutyData) {
         console.error('Error creating duty:', error);
     }
 }
+
+
+function showDeleteButtonOnHover(subQuestId, duty, titleWrapper, dutyCard) {
+    let deleteButton = titleWrapper.querySelector(".delete-button");
+    if (!deleteButton) {
+        deleteButton = document.createElement("button")
+        deleteButton.className = "delete-button"
+        deleteButton.style.background = "red"
+        deleteButton.style.display = 'flex';
+        deleteButton.innerHTML = "delete";
+        deleteButton.position= "absolute"
+        deleteButton.style.cursor = "pointer"
+        deleteButton.style.top ="3px"
+        deleteButton.style.right = "3px"
+        titleWrapper.appendChild(deleteButton)
+        deleteButton.onclick = () => deleteDuty(subQuestId, duty.id, dutyCard);
+    }
+}
+
+function hideDeleteButtonOnHover(titleWrapper) {
+    const deleteButton = titleWrapper.querySelector(".delete-button")
+    titleWrapper.removeChild(deleteButton)
+}
+function showUpdateButtonOnHover(subQuestId, duty, titleWrapper, dutyCard){
+    let updateButton = titleWrapper.querySelector(".update-button");
+    if (!updateButton){
+        updateButton = document.createElement("button")
+        updateButton.className = "update-button"
+        updateButton.style.background = "blue"
+        updateButton.style.display = 'flex';
+        updateButton.innerHTML = "update";
+        updateButton.position= "absolute"
+        updateButton.style.cursor = "pointer"
+        updateButton.style.top ="15px"
+        updateButton.style.right = "15px"
+        titleWrapper.appendChild(updateButton)
+        updateButton.onclick = () => showUpdateDialog(subQuestId, duty, dutyCard);
+    }
+}
+
+function hideUpdateButtonOnHover(titleWrapper) {
+    const updateButton = titleWrapper.querySelector(".update-button")
+    titleWrapper.removeChild(updateButton)
+}
+function showUpdateDialog(subQuestId, duty, dutyCard) {
+    const dialog = document.createElement('div');
+    dialog.className = 'update-duty-dialog';
+    dialog.innerHTML = `
+        <div class="new-duty-content">
+            <form id="update-duty-form">
+                <h3>Update Duty</h3>
+
+                <label for="update-duty-title">New Duty Title</label>
+                <input type="text" id="update-duty-title" value="${duty.title}" required>
+
+                <label for="update-duty-price">New Duty Price</label>
+                <input type="number" id="update-duty-price" value="${duty.price}" required>
+
+                <div class="button-group">
+                    <button type="button" class="close-button">Close</button>
+                    <button type="button" id="update-duty-button">Update Duty</button>
+                </div>
+            </form>
+        </div>
+    `;
+
+    document.body.appendChild(dialog);
+
+    const closeButton = dialog.querySelector('.close-button');
+    const updateButton = dialog.querySelector('#update-duty-button');
+
+    // Close dialog
+    closeButton.addEventListener('click', () => {
+        dialog.remove();
+    });
+
+    // Handle update logic
+    updateButton.addEventListener('click', async () => {
+        const updatedDuty = {
+            ...duty,
+            title: document.getElementById('update-duty-title').value,
+            price: Number(document.getElementById('update-duty-price').value) // Collect updated price
+        };
+
+        try {
+            // Call API to update the duty
+            await updateDuty(subQuestId, updatedDuty);
+
+            // Update the local UI
+            updateDutyUI(dutyCard, updatedDuty);
+
+            dialog.remove();
+        } catch (error) {
+            console.error('Failed to update duty:', error);
+            alert('Failed to update duty. Please try again.');
+        }
+    });
+}
+
+function updateDutyUI(dutyCard, updatedDuty) {
+    const titleElement = dutyCard.querySelector('.duty-title-wrapper p:first-child');
+    const priceElement = dutyCard.querySelector('.duty-title-wrapper p:last-child');
+
+    // Update title
+    titleElement.textContent = updatedDuty.title;
+
+    // Update or add price
+    if (priceElement) {
+        priceElement.textContent = `${updatedDuty.price} ,-`;
+    } else {
+        const newPriceElement = document.createElement('p');
+        newPriceElement.textContent = `${updatedDuty.price} ,-`;
+        dutyCard.querySelector('.duty-title-wrapper').appendChild(newPriceElement);
+    }
+}
+
+
+async function deleteDuty(subQuestId, dutyId, dutyCard) {
+    try {
+        const deleteDutyUrl = `${baseUrl}${subQuestId}/duty/${dutyId}`;
+        const response = await fetch(deleteDutyUrl, {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            }
+        });
+        dutyCard.remove();
+        console.log('Contacted backend successfully: ', response.status);
+    } catch (error) {
+        console.error('Error deleting duty: ', error);
+    }
+}
+async function updateDuty(subQuestId, updatedDuty) {
+    try {
+        const updateDutyUrl = `${baseUrl}${subQuestId}/duty/${updatedDuty.id}`;
+
+        const response = await fetch(updateDutyUrl, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            },
+            body: JSON.stringify(updatedDuty)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to update duty: ${response.statusText}`);
+        }
+
+        console.log('Duty updated successfully:', response.status);
+    } catch (error) {
+        console.error('Error updating duty:', error);
+    }
+}
+
+
+// function ❤️❤️redundant❤️❤️Method️💩💩💩💩💩😊😊😊😊(penis){
+//      redundantValue1;
+//      redundantValue2;
+//      redundantValue3;
+//      redundantValue4;
+//
+//
+//      if (penis.length === 1){
+//     penis = "short"
+//     }
+//     redundantValue1 = redundantvalue2;
+//     redundantValue2 = redundantvalue3;
+//     redundantValue3 = redundantvalue4;
+//     redundantValue4 = redundantvalue1;
+// }
 
 export {loadDuties, createAddDutyCard}
