@@ -62,6 +62,19 @@ function hideUpdateButtonOnHover(titleWrapper) {
 function showUpdateDialog(subQuest, subQuestCard) {
     const dialog = document.createElement('div');
     dialog.className = 'update-sub-quest-dialog';
+
+    const addBudgetToggleHTML = `
+        <div class="add-price-toggle">
+            <label class="checkbox-label">
+                <input type="checkbox" id="show-add-budget" /> Add Budget
+            </label>
+        </div>
+        <div id="add-budget-field" style="display: none;">
+            <label for="budget">Budget</label>
+            <input type="number" id="budget" name="budget" min="0" />
+        </div>
+    `;
+
     dialog.innerHTML = `
         <div class="update-sub-quest-content">
             <form id="update-sub-quest-form">
@@ -69,7 +82,7 @@ function showUpdateDialog(subQuest, subQuestCard) {
                 <label for="update-sub-quest-title">Sub Quest Title</label>
                 <input type="text" id="update-sub-quest-title" value="${subQuest.title}" required>
 
-                <p>Budget: ${subQuest.budget} ,-</p>
+                ${addBudgetToggleHTML}
 
                 <div class="button-group">
                     <button type="button" class="close-button">Close</button>
@@ -83,26 +96,31 @@ function showUpdateDialog(subQuest, subQuestCard) {
 
     const closeButton = dialog.querySelector('.close-button');
     const updateButton = dialog.querySelector('#update-sub-quest-button');
+    const showAddBudget = document.getElementById('show-add-budget');
+    const addBudgetField = document.getElementById('add-budget-field');
+    const budgetInput = document.getElementById('budget');
+
+    // Show or hide the budget input field based on checkbox state
+    showAddBudget.addEventListener('change', (e) => {
+        addBudgetField.style.display = e.target.checked ? 'block' : 'none';
+    });
 
     // Close dialog
     closeButton.addEventListener('click', () => {
         dialog.remove();
     });
 
-    // Handle update logic
+    // Update button logic
     updateButton.addEventListener('click', async () => {
         const updatedSubQuest = {
             ...subQuest,
-            title: document.getElementById('update-sub-quest-title').value
+            title: document.getElementById('update-sub-quest-title').value,
+            budget: showAddBudget.checked ? parseInt(budgetInput.value, 10) || 0 : subQuest.budget // Conditionally get the budget
         };
 
         try {
-            // Call API to update sub quest
             await updateSubQuest(updatedSubQuest);
-
-            // Update the local UI
             updateSubQuestUI(subQuestCard, updatedSubQuest);
-
             dialog.remove();
         } catch (error) {
             console.error('Failed to update sub quest:', error);
@@ -118,17 +136,13 @@ function updateSubQuestUI(subQuestCard, updatedSubQuest) {
     titleElement.textContent = updatedSubQuest.title;
 
     if (budgetElement) {
-        budgetElement.textContent = `Budget: ${updatedSubQuest.budget} ,-`;
+        budgetElement.textContent = `Budget: ${updatedSubQuest.budget} ,- 💰`;
     } else {
         const newBudgetElement = document.createElement('p');
-        newBudgetElement.textContent = `Budget: ${updatedSubQuest.budget} ,-`;
+        newBudgetElement.textContent = `Budget: ${updatedSubQuest.budget} ,- 💰`;
         subQuestCard.querySelector('.sub-quest-title-wrapper').appendChild(newBudgetElement);
     }
 }
-
-
-
-
 
 function showSubQuestDialog() {
     const dialog = document.createElement('div');
@@ -178,7 +192,7 @@ document.body.appendChild(dialog);
         createQuestButton.addEventListener('click', async () => {
             const subQuestData = {
                 title: document.getElementById('sub-quest-title').value,
-                budget: 0,
+                budget: showAddBudget.checked ? `${document.getElementById('budget').value}` : '0',
                 dutyList: [] // Optional, if duties are relevant
             };
 
@@ -189,6 +203,7 @@ document.body.appendChild(dialog);
 }
 
 function toggleAddBudgetCheckbox(e) {
+    const addBudgetField = document.getElementById('add-budget-field');
     addBudgetField.style.display = e.target.checked ? 'block' : 'none';
 }
 
@@ -212,7 +227,7 @@ async function addSubQuest(subQuestData) {
             throw new Error(errorText || 'Failed to add subquest');
         }
 
-        console.log('Subquest added successfully:', response.status);
+        console.log('Contacted sub quest backend: ', response.status);
 
         // Use subQuestData to update the UI directly
         appendNewSubQuest({ ...subQuestData, id: generateTemporaryId() });
@@ -267,7 +282,6 @@ function appendNewSubQuest(subQuest) {
     const emptyState = subQuestGrid.querySelector('.empty-state');
     if (emptyState) emptyState.remove();
 
-    debugger
     // Create the new subquest card
     subQuestCard = document.createElement('div');
     subQuestCard.className = 'sub-quest-card';
@@ -275,12 +289,18 @@ function appendNewSubQuest(subQuest) {
 
     const titleWrapper = document.createElement('div');
     titleWrapper.className = 'sub-quest-title-wrapper';
+    titleWrapper.addEventListener("mouseenter", () => showDeleteButtonOnHover(subQuest, titleWrapper, subQuestCard))
+    titleWrapper.addEventListener("mouseleave",  () => hideDeleteButtonOnHover(titleWrapper))
+
+    titleWrapper.addEventListener("mouseenter", () => showUpdateButtonOnHover(subQuest, titleWrapper, subQuestCard))
+    titleWrapper.addEventListener("mouseleave",  () => hideUpdateButtonOnHover(titleWrapper))
+
 
     const title = document.createElement('h3');
     title.textContent = subQuest.title;
 
     let budget = subQuest.budget > 0
-        ? Object.assign(document.createElement('p'), { textContent: `Budget: ${subQuest.budget} ,-`})
+        ? Object.assign(document.createElement('p'), { textContent: `Budget: ${subQuest.budget} ,- 💰`})
         : null;
 
     titleWrapper.appendChild(title);
@@ -355,7 +375,7 @@ async function displaySubQuests(subQuests) {
         title.textContent = subQuest.title;
 
         const budget = subQuest.budget > 0
-            ? Object.assign(document.createElement('p'), { textContent: `Budget: ${subQuest.budget} ,-` })
+            ? Object.assign(document.createElement('p'), { textContent: `Budget: ${subQuest.budget} ,- 💰` })
             : null;
 
         titleWrapper.appendChild(title);

@@ -324,7 +324,6 @@ button.secondary:hover {
 
 /* Duty */
 .duty-card {
-    cursor: pointer;
     box-shadow: 0 1px 3px #091e4240;
     border-radius: 12px;
     background-color: #0058ff2e;
