@@ -3,7 +3,7 @@ import {loadDuties, createAddDutyCard} from "./duty.js";
 const jwt = localStorage.getItem('jwt');
 const urlParams = new URLSearchParams(window.location.search);
 const questId = urlParams.get('id');
-const baseUrl = `http://localhost:8080/quest/${questId}`;
+const baseUrl = `http://40.127.181.161:8080/quest/${questId}`;
 let addBudgetField;
 let subQuestCard = document.createElement('div');
 
