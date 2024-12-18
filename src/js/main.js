@@ -266,11 +266,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (logoutButton) {
         logoutButton.addEventListener('click', () => {
             localStorage.removeItem('jwt');
-            window.location.href = 'login.html';
+            window.location.href = 'index.html';
         });
     }
 
-    if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+    if (window.location.pathname.endsWith('questboard.html') || window.location.pathname.endsWith('/')) {
         await loadQuestBoard();
     } else if (window.location.pathname.includes('newQuest.html')) {
         await setupNewQuestPage();

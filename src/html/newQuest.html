@@ -12,7 +12,7 @@
   </head>
   <body>
     <div class="page-container">
-      <form id="newQuestForm">
+      <form id="newQuestForm" action="questboard.html" method="post">
         <h2>Create New Quest</h2>
 
         <label for="questTitle">Quest Title</label>
@@ -44,7 +44,7 @@
         <input type="hidden" id="questImageUrl" name="questImageUrl" required />
         <!-- Ensure the button is type="button" to prevent default form submission -->
         <button type="button" id="createQuestButton">Create Quest</button>
-        <a href="index.html" class="back-link">Back to Quest Board</a>
+        <a href="questboard.html" class="back-link">Back to Quest Board</a>
       </form>
 
       <div class="right-panel">

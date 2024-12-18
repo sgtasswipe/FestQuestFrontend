@@ -10,4 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    const questboardLink = document.getElementById('questboardLink');
+    if (questboardLink) {
+        questboardLink.href = 'questboard.html';
+    }
 });

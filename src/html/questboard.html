@@ -1,0 +1,35 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quest Board - FestQuest</title>
+<link rel="icon" type="image/png" href="../resources/favicon.png" />
+<link rel="stylesheet" href="../css/newQuest.css" />
+<link rel="stylesheet" href="../css/common.css" />
+<link rel="stylesheet" href="../css/imageStyles.css" />
+<link rel="stylesheet" href="../css/questboard.css" />
+<link rel="stylesheet" href="../css/spinner.css" />
+
+</head>
+<body>
+<header class="quest-header">
+  <h1>Quest Board</h1>
+  <p>Plan your festival adventures</p>
+</header>
+<main>
+    <!-- Navigation for controls -->
+    <nav class="quest-controls" role="navigation" aria-label="Quest board controls">
+      <button class="btn-new-quest" aria-label="Create a new quest">New Quest</button>
+      <button class="btn-logout" aria-label="Log out">Logout</button>
+    </nav>
+
+    <!-- Quest board section -->
+    <section class="quest-board" aria-labelledby="quest-board-title">
+      <h2 id="quest-board-title" class="sr-only">Available Quests</h2>
+      <div id="quest-grid" aria-live="polite" aria-busy="true">
+        <!-- Spinner is dynamically injected via JavaScript -->
+      </div>
+    </section>
+  </main>
+  <script src="../js/main.js" type="module" nonce="${cspNonce}""></script>
+  <script src="../js/quest.js" type="module" nonce="${cspNonce}"></script>
+</body>
+</html>

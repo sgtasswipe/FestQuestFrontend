@@ -30,7 +30,7 @@ async function handleLogin(event) {
             localStorage.setItem('jwt', authorization);
             
             // Redirect to the index page
-            window.location.href = 'index.html';
+            window.location.href = 'questboard.html';
         } else {
             alert('Invalid login credentials'); // Inform the user
         }
