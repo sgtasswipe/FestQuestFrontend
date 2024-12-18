@@ -30,6 +30,7 @@ header p {
 input[type="text"],
 input[type="date"],
 input[type="time"],
+input[type="number"],
 textarea {
     width: 100%;
     padding: 12px 16px;

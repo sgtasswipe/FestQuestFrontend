@@ -1,4 +1,6 @@
 // Variables
+import {setupSubQuestBtn, loadSubQuests} from "./subQuest.js";
+
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const questId = params.get('id');
@@ -43,8 +45,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const quest = await fetchQuestDetails(questId);
                 // Restore the original structure and populate it
                 questDetails.innerHTML = originalContent;
+                await loadSubQuests();
                 displayQuestDetails(quest);
                 setupActionButtons(quest);
+                setupSubQuestBtn();
             } catch (error) {
                 console.error('Error loading quest details:', error);
                 questDetails.innerHTML = '<p class="empty-state">Failed to load quest details. Please try again later.</p>';
@@ -153,6 +157,7 @@ function displayQuestDetails(quest) {
 function setupActionButtons(quest) {
     const editBtn = document.getElementById('editQuestBtn');
     const deleteBtn = document.getElementById('deleteQuestBtn');
+
 
     editBtn.setAttribute('data-href', `newQuest.html?edit=${quest.id}`);
     editBtn.addEventListener('click', (e) => {
