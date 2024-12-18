@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signupForm');
     //const baseUrl = "http://festquest-backend:8080";
-    const baseUrl = "http://localhost:8080";
+    const baseUrl = "http://40.127.181.161:8080";
 
     // Functions
     /**
