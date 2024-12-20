@@ -1,9 +1,11 @@
 import {loadDuties, createAddDutyCard} from "./duty.js";
+import {BASE_URL, DELETE_METHOD, POST_METHOD, PUT_METHOD} from "./api/constants.js";
+import {fetchAnyUrl} from "./api/apiservice.js";
 
 const jwt = localStorage.getItem('jwt');
 const urlParams = new URLSearchParams(window.location.search);
 const questId = urlParams.get('id');
-const baseUrl = `http://40.127.181.161:8080/quest/${questId}`;
+const baseUrl = `${BASE_URL}/quest/${questId}`;
 let addBudgetField;
 let subQuestCard = document.createElement('div');
 
@@ -85,8 +87,8 @@ function showUpdateDialog(subQuest, subQuestCard) {
                 ${addBudgetToggleHTML}
 
                 <div class="button-group">
+                    <button type="submit" id="update-sub-quest-button">Update Sub Quest</button>
                     <button type="button" class="close-button">Close</button>
-                    <button type="button" id="update-sub-quest-button">Update Sub Quest</button>
                 </div>
             </form>
         </div>
@@ -209,28 +211,12 @@ function toggleAddBudgetCheckbox(e) {
 
 async function addSubQuest(subQuestData) {
     try {
-        const postQuestUrl = baseUrl + '/sub-quest';
+        const postUrl = `/quest/${questId}/sub-quest`;
 
-        const response = await fetch(postQuestUrl, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${jwt}`
-            },
-            body: JSON.stringify(subQuestData)
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('Server response error:', errorText);
-            throw new Error(errorText || 'Failed to add subquest');
-        }
-
-        console.log('Contacted sub quest backend: ', response.status);
+        const response = await fetchAnyUrl(`${BASE_URL}${postUrl}`, POST_METHOD, {body: JSON.stringify(subQuestData)});
 
         // Use subQuestData to update the UI directly
-        appendNewSubQuest({ ...subQuestData, id: generateTemporaryId() });
+        appendNewSubQuest(response.body);
     } catch (error) {
         console.error('Error creating sub quest:', error);
     }
@@ -238,18 +224,11 @@ async function addSubQuest(subQuestData) {
 
 async function deleteSubQuest(subQuestId, subQuestCard) {
     try {
-        const deleteSubQuestUrl = baseUrl + '/sub-quest/' + subQuestId;
-        const response = await fetch(deleteSubQuestUrl, {
-            method: 'DELETE',
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${jwt}`
-            }
-        });
+        const deleteSubQuestUrl = `/quest/${questId}/sub-quest/${subQuestId}`;
+        const response = await fetchAnyUrl(`${BASE_URL}${deleteSubQuestUrl}`, DELETE_METHOD)
+
         subQuestCard.remove();
-        console.log('Sub quest deleted successfully:', response.status);
+        console.log('Sub quest deleted successfully:', response.statusCode);
     } catch (error) {
         console.error('Error deleting sub quest: ', error);
     }
@@ -257,18 +236,10 @@ async function deleteSubQuest(subQuestId, subQuestCard) {
 
 async function updateSubQuest(updatedSubQuest) {
     try {
-        const deleteSubQuestUrl = baseUrl + '/sub-quest/' + updatedSubQuest.id;
-        const response = await fetch(deleteSubQuestUrl, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${jwt}`
-            },
-            body: JSON.stringify(updatedSubQuest)
-        });
-        console.log('Sub quest updated successfully:', response.status);
+        const putSubQuestUrl = `/quest/${questId}/sub-quest/${updatedSubQuest.id}`;
+        const response = await fetchAnyUrl(`${BASE_URL}${putSubQuestUrl}`, PUT_METHOD, {body: JSON.stringify(updatedSubQuest)})
+
+        console.log('Sub quest updated successfully:', response.statusCode);
     } catch (error) {
         console.error('Error updating sub quest: ', error);
     }

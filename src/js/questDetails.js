@@ -1,5 +1,7 @@
 // Variables
 import {setupSubQuestBtn, loadSubQuests} from "./subQuest.js";
+import {BASE_URL, POST_METHOD} from "./api/constants.js";
+import {fetchAnyUrl} from "./api/apiservice.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
@@ -10,12 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const shareToken = urlParams.get('shareToken');
 
     if (shareToken) {
-        fetch(`http://40.127.181.161:8080/questboard/shared/${shareToken}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        })
+        await fetchAnyUrl(`${BASE_URL}/questboard/shared/${shareToken}`)
         .then(response => response.json())
         .then(data => {
             displayQuestDetails(data);
@@ -42,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             `;
 
             try {
-                const quest = await fetchQuestDetails(questId);
+                const quest = await fetchAnyUrl(`${BASE_URL}/questboard/quest/${questId}`);
                 // Restore the original structure and populate it
                 questDetails.innerHTML = originalContent;
                 await loadSubQuests();
@@ -76,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         async function loadQuestDetails(questId) {
-            const quest = await fetchQuestDetails(questId);
+            const quest = await fetchAnyUrl(`${BASE_URL}/questboard/quest/${questId}`);
             if (quest.checklistItems) {
                 quest.checklistItems.forEach(item => addChecklistItem(item));
             }
@@ -90,22 +87,6 @@ document.addEventListener('DOMContentLoaded', async () => {
  * @param {string} questId - The ID of the quest.
  * @returns {Promise<Object>} - A promise that resolves to the quest details.
  */
-async function fetchQuestDetails(questId) {
-    const jwt = localStorage.getItem('jwt');
-    const response = await fetch(`http://40.127.181.161:8080/questboard/quest/${questId}`, {
-        credentials: 'include',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization' :  `Bearer ${jwt}`
-        }
-    });
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return await response.json();
-}
 
 /**
  * Displays the details of the quest on the page.
@@ -168,7 +149,7 @@ function setupActionButtons(quest) {
     deleteBtn.addEventListener('click', async () => {
         if (confirm('Are you sure you want to delete this quest?')) {
             try {
-                const response = await fetch(`http://40.127.181.161:8080/questboard/quest/${quest.id}`, {
+                const response = await fetch(`${BASE_URL}/questboard/quest/${quest.id}`, {
                     method: 'DELETE',
                     credentials: 'include',
                     headers: {
@@ -226,19 +207,12 @@ function showShareDialog(shareLink) {
 
 // Update the shareQuest function to use the custom dialog
 function shareQuest(questId) {
-    fetch(`http://40.127.181.161:8080/quest/${questId}/generateShareToken`, {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        const shareLink = `${window.location.origin}/src/html/questDetails.html?shareToken=${data.shareToken}`;
-        showShareDialog(shareLink);
-    })
-    .catch(error => {
-        console.error('Error generating share token:', error);
-    });
+    fetchAnyUrl(`${BASE_URL}/questboard/quest/${questId}/generateShareToken`, POST_METHOD)
+        .then(data => {
+            const shareLink = `${window.location.origin}/src/html/questDetails.html?shareToken=${data.shareToken}`;
+            showShareDialog(shareLink);
+        })
+        .catch(error => {
+            console.error('Error generating share token:', error);
+        });
 }

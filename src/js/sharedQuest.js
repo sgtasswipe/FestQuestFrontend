@@ -1,4 +1,4 @@
-const API_URL = 'http://40.127.181.161:8080/questboard';
+import {BASE_URL} from "./api/constants.js";
 
 async function loadSharedQuest() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -10,7 +10,7 @@ async function loadSharedQuest() {
     }
 
     try {
-        const response = await fetch(`${API_URL}/shared/${shareToken}`, {
+        const response = await fetch(`${BASE_URL}/questboard/shared/${shareToken}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'

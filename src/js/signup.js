@@ -1,7 +1,8 @@
+import {BASE_URL} from "./api/constants.js";
+
 document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signupForm');
     //const baseUrl = "http://festquest-backend:8080";
-    const baseUrl = "http://40.127.181.161:8080";
 
     // Functions
     /**
@@ -17,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = document.getElementById('password').value;
 
         try {
-            const response = await fetch(`${baseUrl}/signup`, {
+            const response = await fetch(`${BASE_URL}/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

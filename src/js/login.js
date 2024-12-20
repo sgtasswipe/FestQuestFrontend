@@ -8,14 +8,16 @@ document.addEventListener("DOMContentLoaded", () => {
 /**
  * Handles user login by sending credentials to the server and processing the response.
  */
+
 async function handleLogin(event) {
     event.preventDefault(); // Prevent form from refreshing the page
 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
+
     try {
-        const response = await fetch('http://40.127.181.161:8080/login', {
+        const response = await fetch(`${BASE_URL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

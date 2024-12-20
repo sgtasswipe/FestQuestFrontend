@@ -3,12 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="
-        default-src 'self' http://localhost:8080;
-        img-src 'self' data: https: http://localhost:8080;
-        style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
-        script-src 'self';
-        connect-src 'self' http://localhost:8080;">
     <title>Quest Details - FestQuest</title>
     <link rel="icon" type="image/png" href="../resources/favicon.png" />
     <link rel="stylesheet" href="../css/questDetails.css" />
@@ -66,7 +60,7 @@
     <script th:nonce="${cspNonce}" src="../js/navigation.js" type="module"></script>
     <script th:nonce="${cspNonce}" src="../js/questDetails.js" type="module"></script>
     <script th:nonce="${cspNonce}" src="../js/sharedQuest.js" type="module"></script>
-    <script th:nonce="${cspNonce}" src="../js/subQuest.js" type="module" defer ></script>
-    <script th:nonce="${cspNonce}" src="../js/duty.js" type="module" defer ></script>
+    <script th:nonce="${cspNonce}" src="../js/subQuest.js" type="module"  ></script>
+    <script th:nonce="${cspNonce}" src="../js/duty.js" type="module"  ></script>
 </body>
 </html>

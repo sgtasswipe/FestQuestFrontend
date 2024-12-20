@@ -1,5 +1,7 @@
 // Variables
+import {BASE_URL} from "./api/constants.js";
 import UnsplashAPI from './Unsplashedapi.js';
+import {fetchAnyUrl} from "./api/apiservice.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -29,32 +31,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             try {
                 // Add a small delay to ensure spinner is visible
                 await new Promise(resolve => setTimeout(resolve, 300));
-                const quests = await fetchQuests();
+                const quests = await fetchAnyUrl(`${BASE_URL}/questboard/quests`);
                 displayQuests(quests);
             } catch (error) {
                 console.error('Error loading quests:', error);
                 questGrid.innerHTML = '<p class="empty-state">Failed to load quests. Please try again later.</p>';
             }
         }
-    }
-
-    async function fetchQuests() {
-        const jwt = localStorage.getItem('jwt');
-        const response = await fetch(`http://40.127.181.161:8080/questboard/quests`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${jwt}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return await response.json();
     }
 
     async function setupNewQuestPage() {
@@ -166,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Add the shareQuest function
     function shareQuest(questId) {
-        fetch(`http://40.127.181.161:8080/questboard/quest/${questId}/generateShareToken`, {
+        fetch(`${BASE_URL}/questboard/quest/${questId}/generateShareToken`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`,

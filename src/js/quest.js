@@ -1,4 +1,7 @@
 // Variables - moved outside for global access
+import {fetchAnyUrl} from "./api/apiservice.js";
+import {BASE_URL} from "./api/constants.js";
+
 let showEndTimeCheckbox;
 let editQuestId;
 let endTimeFields;
@@ -94,8 +97,8 @@ async function handleCreateOrUpdateQuest(event) {
     try {
         const jwt = localStorage.getItem('jwt');
         const url = editQuestId
-            ? `http://40.127.181.161:8080/questboard/quest/${editQuestId}`
-            : `http://40.127.181.161:8080/questboard/quest`;
+            ? `${BASE_URL}/questboard/quest/${editQuestId}`
+            : `${BASE_URL}/questboard/quest`;
 
         const method = editQuestId ? 'PUT' : 'POST';
 
