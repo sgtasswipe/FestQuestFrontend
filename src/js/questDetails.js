@@ -1,4 +1,6 @@
 // Variables
+import {setupSubQuestBtn, loadSubQuests} from "./subQuest.js";
+
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const questId = params.get('id');
@@ -8,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const shareToken = urlParams.get('shareToken');
 
     if (shareToken) {
-        fetch(`http://40.127.181.161/questboard/shared/${shareToken}`, {
+        fetch(`http://40.127.181.161:8080/questboard/shared/${shareToken}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
@@ -43,8 +45,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const quest = await fetchQuestDetails(questId);
                 // Restore the original structure and populate it
                 questDetails.innerHTML = originalContent;
+                await loadSubQuests();
                 displayQuestDetails(quest);
                 setupActionButtons(quest);
+                setupSubQuestBtn();
             } catch (error) {
                 console.error('Error loading quest details:', error);
                 questDetails.innerHTML = '<p class="empty-state">Failed to load quest details. Please try again later.</p>';
@@ -78,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
     }
-});
+
 
 // Functions
 /**
@@ -88,7 +92,9 @@ document.addEventListener('DOMContentLoaded', async () => {
  */
 async function fetchQuestDetails(questId) {
     const jwt = localStorage.getItem('jwt');
-    const response = await fetch(`http://40.127.181.161/questboard/quest/${questId}`, {
+debugger
+    const response = await fetch(`http://40.127.181.161:8080/questboard/quest/${questId}`, {
+       method: 'GET',
         credentials: 'include',
         headers: {
             'Accept': 'application/json',
@@ -97,7 +103,9 @@ async function fetchQuestDetails(questId) {
     });
 
     if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}, details: ${JSON.stringify(errorDetails)}`);
+
+
     }
 
     return await response.json();
@@ -154,6 +162,7 @@ function setupActionButtons(quest) {
     const editBtn = document.getElementById('editQuestBtn');
     const deleteBtn = document.getElementById('deleteQuestBtn');
 
+
     editBtn.setAttribute('data-href', `newQuest.html?edit=${quest.id}`);
     editBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -163,7 +172,9 @@ function setupActionButtons(quest) {
     deleteBtn.addEventListener('click', async () => {
         if (confirm('Are you sure you want to delete this quest?')) {
             try {
-                const response = await fetch(`http://40.127.181.161/questboard/quest/${quest.id}`, {
+
+                const response = await fetch(`http://40.127.181.161:8080/questboard/quest/${quest.id}`, {
+
                     method: 'DELETE',
                     credentials: 'include',
                     headers: {
@@ -221,7 +232,8 @@ function showShareDialog(shareLink) {
 
 // Update the shareQuest function to use the custom dialog
 function shareQuest(questId) {
-    fetch(`http://40.127.181.161/questboard/quest/${questId}/generateShareToken`, {
+
+    fetch(`http://40.127.181.161:8080/quest/${questId}/generateShareToken`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
@@ -236,4 +248,4 @@ function shareQuest(questId) {
     .catch(error => {
         console.error('Error generating share token:', error);
     });
-}
+}});

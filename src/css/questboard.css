@@ -11,7 +11,7 @@ body {
 
 main {
   max-width: 1400px;
-  padding: 40px 20px;
+  padding: 20px 20px;
   justify-content: center;
   align-items: center;
 }
@@ -67,7 +67,7 @@ h2 {
   overflow-x: hidden;
   min-height: 400px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin-left: 15%;
+
   position: relative;
 }
 

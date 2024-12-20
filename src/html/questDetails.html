@@ -3,18 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="
-        default-src 'self' http://localhost:8080;
-        img-src 'self' data: https: http://localhost:8080;
-        style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
-        script-src 'self';
-        connect-src 'self' http://localhost:8080;">
     <title>Quest Details - FestQuest</title>
     <link rel="icon" type="image/png" href="../resources/favicon.png" />
     <link rel="stylesheet" href="../css/questDetails.css" />
     <link rel="stylesheet" href="../css/spinner.css">
     <link rel="stylesheet" href="../css/common.css">
-    
 </head>
 <body>
     <header class="quest-header">
@@ -52,12 +45,13 @@
                                 <button id="editQuestBtn" class="btn-edit">Edit Quest</button>
                                 <button id="deleteQuestBtn" class="btn-delete">Delete Quest</button>
                                 <!-- The Share button will be appended here -->
+                                <button id="addSubquestBtn" class="addButton">Add Sub Quest</button>
                             </div>
                         </div>
                     </div>
-                    <aside class="quest-sidebar">
-                        <!-- Reserved for future features (participants, chat, etc.) -->
-                    </aside>
+                </div>
+                <div id="sub-quest-grid">
+
                 </div>
             </div>
         </div>
@@ -66,5 +60,7 @@
     <script th:nonce="${cspNonce}" src="../js/navigation.js" type="module"></script>
     <script th:nonce="${cspNonce}" src="../js/questDetails.js" type="module"></script>
     <script th:nonce="${cspNonce}" src="../js/sharedQuest.js" type="module"></script>
+    <script th:nonce="${cspNonce}" src="../js/subQuest.js" type="module" defer ></script>
+    <script th:nonce="${cspNonce}" src="../js/duty.js" type="module" defer ></script>
 </body>
 </html>

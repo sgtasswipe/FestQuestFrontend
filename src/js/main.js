@@ -40,7 +40,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function fetchQuests() {
         const jwt = localStorage.getItem('jwt');
-        const response = await fetch(`http://40.127.181.161/questboard/quests`, {
+
+        const response = await fetch(`http://40.127.181.161:8080/questboard/quests`, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -166,7 +167,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Add the shareQuest function
     function shareQuest(questId) {
-        fetch(`http://40.127.181.161/questboard/quest/${questId}/generateShareToken`, {
+
+        fetch(`http://40.127.181.161:8080/questboard/quest/${questId}/generateShareToken`, {
+
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`,

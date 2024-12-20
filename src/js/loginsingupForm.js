@@ -3,7 +3,7 @@ const signUpBtn = document.getElementById("signUp");
 const loginForm = document.getElementById("loginForm");
 const signupForm = document.getElementById("signupForm");
 const container = document.querySelector(".container");
-const baseUrl = "http://40.127.181.161";
+const baseUrl = "http://40.127.181.161:8080";
 
 // Event listeners for sliding between forms
 signInBtn.addEventListener("click", () => {

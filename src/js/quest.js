@@ -38,7 +38,7 @@ function toggleEndTimeFields(e) {
 async function loadQuestForEdit() {
     const jwt = localStorage.getItem('jwt');
     try {
-        const response = await fetch(`http://40.127.181.161/questboard/quest/${editQuestId}`, {
+        const response = await fetch(`http://40.127.181.161:8080/questboard/quest/${editQuestId}`, {
             credentials: 'include',
             headers: {
                 'Accept': 'application/json',
@@ -94,8 +94,9 @@ async function handleCreateOrUpdateQuest(event) {
     try {
         const jwt = localStorage.getItem('jwt');
         const url = editQuestId
-            ? `http://40.127.181.161/questboard/quest/${editQuestId}`
-            : `http://40.127.181.161/questboard/quest`;
+
+            ? `http://40.127.181.161:8080/questboard/quest/${editQuestId}`
+            : `http://40.127.181.161:8080/questboard/quest`;
 
         const method = editQuestId ? 'PUT' : 'POST';
 
