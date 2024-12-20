@@ -1,48 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to FestQuest</title>
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="../css/index.css">
-</head>
-<body>
-    <header>
-        <h1>FestQuest</h1>
-        <p>Your Ultimate Event Planning Tool</p>
-    </header>
-          <div class="landing-page">
-            <header>
-              <div class="container">
-                <a href="#" class="logo"><img src="../resources/favicon.ico" alt="Logo"></a>
-                <ul class="links">
-                  <li><a href="index.html">Home</a></li>
-                  <li><a href="login.html">Login</a></li>
-                </ul>
-              </div>
-            </header>
-            <div class="content">
-              <div class="container">
-                <div class="info">
-                  <h1>Looking to Plan Your Next Event?</h1>
-                  <p>FestQuest makes it easy to organize your events effortlessly.</p>
-                  <p>Share your events with friends and acquaintances.</p>
-                  <p>Start by signing up today using the button below.</p>
-                  <button onclick="location.href='signup.html'">Sign Up</button>
-                </div>
-                <div class="image">
-                  <img src="https://i.postimg.cc/65QxYYzh/001234.png">
-                </div>
-              </div>
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FestQuest</title>
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/index.css" />
+    <link rel="stylesheet" href="../css/title.css" />
+    <link rel="stylesheet" href="../css/menu.css" />
+  </head>
+  <header>
+    <nav class="mask">
+      <a href="#">FestQuest</a>
+      <ul class="list">
+        <li><a href="../html/loginSignupForm.html">Login</a></li>
+        <li><a href="../html/loginSignupForm.html">Sign up</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  <body>
+    <video autoplay muted loop id="myVideo">
+      <source
+        src="../resources/FPV Drone Flight through Beautiful Iceland Canyon.mp4"
+        type="video/mp4"
+      />
+    </video>
+    <section class="wrapper">
+      <div class="top">FestQuest</div>
+      <div class="bottom" aria-hidden="true">FestQuest</div>
+    </section>
+    <div class="landing-page">
+      <div class="container"></div>
+      <div class="content">
+        <div class="container">
+          <div class="info">
+            <h1>Looking to Plan Your Next Event?</h1>
+            <p>FestQuest makes it easy to organize your events effortlessly.</p>
+            <p>Share your events with friends and acquaintances.</p>
+            <p>So, if you're ready to plan your next big adventure.</p>
+            <p>Click the button below! &#x1F60E;</p>
+            <button onclick="location.href='loginSignupForm.html'" type="button">
+                I'm ready!</button>
           </div>
-          <!-- End Landing Page -->
+        </div>
+      </div>
+    </div>
     <footer>
-        <p>&copy; 2024 FestQuest. All rights reserved.</p>
+      <p>&copy; 2024 FestQuest. All rights reserved.</p>
     </footer>
     <script src="../js/main.js" type="module"></script>
     <script src="../js/quest.js" type="module"></script>
-</body>
+  </body>
 </html>
-

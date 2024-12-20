@@ -94,6 +94,7 @@ async function handleCreateOrUpdateQuest(event) {
     try {
         const jwt = localStorage.getItem('jwt');
         const url = editQuestId
+
             ? `http://40.127.181.161:8080/questboard/quest/${editQuestId}`
             : `http://40.127.181.161:8080/questboard/quest`;
 
