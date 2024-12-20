@@ -1,30 +1,15 @@
+import {BASE_URL, DELETE_METHOD, POST_METHOD, PUT_METHOD} from "./api/constants.js";
+import {fetchAnyUrl} from "./api/apiservice.js";
+
 const jwt = localStorage.getItem('jwt');
 const urlParams = new URLSearchParams(window.location.search);
 const questId = urlParams.get('id');
-const baseUrl = `http://40.127.181.161:8080/quest/${questId}/sub-quest/`;
+const BASE_REQUEST_MAPPING = `/quest/${questId}/sub-quest/`;
 let addPriceField;
 
 async function loadDuties(subQuest, subQuestCard) {
-    const duties = await getDuties(subQuest.id);
+    const duties = await fetchAnyUrl(`${BASE_URL}${BASE_REQUEST_MAPPING}${subQuest.id}/duties`)
     displayDuties(duties, subQuestCard, subQuest);
-}
-
-async function getDuties(subQuestId) {
-    try {
-        const getDutiesUrl = baseUrl + subQuestId + '/duties';
-
-        const response = await fetch(getDutiesUrl, {
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization' :  `Bearer ${jwt}`
-            }
-        });
-        return response.json();
-    } catch (error) {
-        console.error('Error getting quests: ', error);
-    }
 }
 
 function displayDuties(duties, subQuestCard, subQuest) {
@@ -104,8 +89,8 @@ function showDutyDialog(subQuest) {
                 
                 ${addPriceToggleHTML}
                 
-                <button class="close-button">Close</button>
                 <button type="button" id="create-duty-button">Create Duty</button>
+                <button class="close-button">Close</button>
             </form>
         </div>
     `;
@@ -145,37 +130,15 @@ function showDutyDialog(subQuest) {
 function toggleAddPriceCheckbox(e) {
     addPriceField.style.display = e.target.checked ? 'block' : 'none';
 }
-
 async function addDuty(subQuest, dutyData) {
     try {
-        const postDutyUrl = baseUrl + subQuest.id + '/duty';
+        const postDutyUrl = `${BASE_URL}${BASE_REQUEST_MAPPING}${subQuest.id}/duty`;
 
-        const response = await fetch(postDutyUrl, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${jwt}`
-            },
-            body: JSON.stringify(dutyData)
-        });
-
-        if (!response.ok) {
-            throw new Error(await response.text() || 'Failed to add duty');
-        }
-
-        let oldDutyId = dutyData.id;
-
-        // Generate a temporary ID for the new duty
-        dutyData.id = generateTemporaryId();
+        const response = await fetchAnyUrl(postDutyUrl, POST_METHOD, {body: JSON.stringify(dutyData)})
 
         // Append the new duty with the temporary ID to the UI
-        appendNewDuty(subQuest, dutyData);
-
-        // Replace temporary ID with the real ID in the UI
-        updateDutyIdInUI(dutyData.id, oldDutyId);
-
-        console.log('Contacted backend successfully: ', response.status);
+        appendNewDuty(subQuest, response.body);
+        console.log('Contacted backend successfully: ', response.statusCode);
     } catch (error) {
         console.error('Error creating duty:', error);
     }
@@ -357,61 +320,26 @@ function updateDutyUI(dutyCard, updatedDuty) {
 
 async function deleteDuty(subQuestId, dutyId, dutyCard) {
     try {
-        const deleteDutyUrl = `${baseUrl}${subQuestId}/duty/${dutyId}`;
-        const response = await fetch(deleteDutyUrl, {
-            method: 'DELETE',
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${jwt}`
-            }
-        });
+        const deleteDutyUrl = `${BASE_URL}${BASE_REQUEST_MAPPING}${subQuestId}/duty/${dutyId}`;
+        const response = await fetchAnyUrl(deleteDutyUrl, DELETE_METHOD);
+
         dutyCard.remove();
-        console.log('Contacted backend successfully: ', response.status);
+        console.log('Contacted backend successfully: ', response.statusCode);
     } catch (error) {
         console.error('Error deleting duty: ', error);
     }
 }
 async function updateDuty(subQuestId, updatedDuty) {
     try {
-        const updateDutyUrl = `${baseUrl}${subQuestId}/duty/${updatedDuty.id}`;
+        const updateDutyUrl = `${BASE_URL}${BASE_REQUEST_MAPPING}${subQuestId}/duty/${updatedDuty.id}`;
 
-        const response = await fetch(updateDutyUrl, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${jwt}`
-            },
-            body: JSON.stringify(updatedDuty)
-        });
+        const response = await fetchAnyUrl(updateDutyUrl, PUT_METHOD, {body: JSON.stringify(updatedDuty)})
 
-        if (!response.ok) {
-            throw new Error(`Failed to update duty: ${response.statusText}`);
-        }
 
-        console.log('Duty updated successfully:', response.status);
+        console.log('Contacted backend successfully:', response.statusCode);
     } catch (error) {
         console.error('Error updating duty:', error);
     }
 }
-
-
-// function ❤️❤️redundant❤️❤️Method️💩💩💩💩💩😊😊😊😊(penis){
-//      redundantValue1;
-//      redundantValue2;
-//      redundantValue3;
-//      redundantValue4;
-//
-//
-//      if (penis.length === 1){
-//     penis = "short"
-//     }
-//     redundantValue1 = redundantvalue2;
-//     redundantValue2 = redundantvalue3;
-//     redundantValue3 = redundantvalue4;
-//     redundantValue4 = redundantvalue1;
-// }
 
 export {loadDuties, createAddDutyCard}

@@ -1,4 +1,7 @@
 // Variables - moved outside for global access
+import {fetchAnyUrl} from "./api/apiservice.js";
+import {BASE_URL} from "./api/constants.js";
+
 let showEndTimeCheckbox;
 let editQuestId;
 let endTimeFields;
@@ -36,21 +39,9 @@ function toggleEndTimeFields(e) {
 }
 
 async function loadQuestForEdit() {
-    const jwt = localStorage.getItem('jwt');
-    try {
-        const response = await fetch(`http://40.127.181.161:8080/questboard/quest/${editQuestId}`, {
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${jwt}`
-            }
-        });
-        const quest = await response.json();
+    const quest = await fetchAnyUrl(`${BASE_URL}/questboard/quest/${editQuestId}`);
         populateForm(quest);
         document.getElementById('createQuestButton').textContent = 'Update Quest';
-    } catch (error) {
-        console.error('Error loading quest for editing:', error);
-    }
 }
 
 function populateForm(quest) {
@@ -94,9 +85,8 @@ async function handleCreateOrUpdateQuest(event) {
     try {
         const jwt = localStorage.getItem('jwt');
         const url = editQuestId
-
-            ? `http://40.127.181.161:8080/questboard/quest/${editQuestId}`
-            : `http://40.127.181.161:8080/questboard/quest`;
+            ? `${BASE_URL}/questboard/quest/${editQuestId}`
+            : `${BASE_URL}/questboard/quest`;
 
         const method = editQuestId ? 'PUT' : 'POST';
 
