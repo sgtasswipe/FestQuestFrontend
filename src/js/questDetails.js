@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const shareToken = urlParams.get('shareToken');
 
     if (shareToken) {
-        fetch(`http://localhost:8080/questboard/shared/${shareToken}`, {
+        fetch(`http://40.127.181.161/questboard/shared/${shareToken}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
  */
 async function fetchQuestDetails(questId) {
     const jwt = localStorage.getItem('jwt');
-    const response = await fetch(`http://localhost:8080/questboard/quest/${questId}`, {
+    const response = await fetch(`http://40.127.181.161/questboard/quest/${questId}`, {
         credentials: 'include',
         headers: {
             'Accept': 'application/json',
@@ -163,7 +163,7 @@ function setupActionButtons(quest) {
     deleteBtn.addEventListener('click', async () => {
         if (confirm('Are you sure you want to delete this quest?')) {
             try {
-                const response = await fetch(`http://localhost:8080/questboard/quest/${quest.id}`, {
+                const response = await fetch(`http://40.127.181.161/questboard/quest/${quest.id}`, {
                     method: 'DELETE',
                     credentials: 'include',
                     headers: {
@@ -221,7 +221,7 @@ function showShareDialog(shareLink) {
 
 // Update the shareQuest function to use the custom dialog
 function shareQuest(questId) {
-    fetch(`http://localhost:8080/questboard/quest/${questId}/generateShareToken`, {
+    fetch(`http://40.127.181.161/questboard/quest/${questId}/generateShareToken`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('jwt')}`,

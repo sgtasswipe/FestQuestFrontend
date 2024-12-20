@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/questboard';
+const API_URL = 'http://40.127.181.161/questboard';
 
 async function loadSharedQuest() {
     const urlParams = new URLSearchParams(window.location.search);
