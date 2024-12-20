@@ -1,145 +1,177 @@
-@import url('common.css');
-@import url('imageStyles.css');
+@import url("common.css");
+@import url("imageStyles.css");
+@import url('https://fonts.googleapis.com/css?family=Holtwood+One+SC');
+
+body {
+  background-image: url("../resources/questboardBG.jpg");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
 
 main {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 40px 20px;
+  max-width: 1400px;
+  padding: 40px 20px;
+  justify-content: center;
+  align-items: center;
+}
+h2 {
+    font-family: "Holtwood One SC", serif;
+    text-align: start;
+    font-size: 35px;
+    color: rgb(220, 224, 0);
+    text-shadow: rgb(0, 0, 0) 2px 2px 2px;
 }
 
 .quest-controls {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 30px;
-}
-
-.btn-new-quest {
-    background-color: #38a169;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn-new-quest:hover {
-    background-color: #2f855a;
-    transform: translateY(-2px);
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 30px;
 }
 
 .btn-logout {
-    background-color: #e53e3e;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+  height: 4em;
+  width: auto;
+  padding: 0 1.5rem;
+  background-color: #e53e3e;
+  color: white;
+  border-radius: 8px;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  margin-right: 2rem;
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
 }
 
 .btn-logout:hover {
-    background-color: #c53030;
-    transform: translateY(-2px);
+  background-color: #c53030;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .quest-board {
-    background-color: #f5f5f5;
-    padding: 35px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    overflow-x: hidden;
-    min-height: 400px;
-    position: relative;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: rgba(246, 233, 107, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(246, 233, 107, 0.68);
+  margin-top: 15%;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  overflow-x: hidden;
+  min-height: 400px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-left: 15%;
+  position: relative;
+}
+
+.quest-board .btn-new-quest {
+  position: absolute;
+  top: 20px;
+  right: 100px;
+  background-color: #38a169;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.quest-board .btn-new-quest:hover {
+  background-color: #2f855a;
+  transform: translateY(-2px);
 }
 
 .spinner-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
 }
 
 #quest-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 10px;
-    width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 10px;
+  width: 100%;
 }
 
 .quest-card {
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    display: flex;
-    flex-direction: column;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .quest-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
 .quest-image {
-    width: 100%;
-    height: 200px; /* Fixed height for images */
-    object-fit: cover; /* Maintain aspect ratio */
+  width: 100%;
+  height: 200px; /* Fixed height for images */
+  object-fit: cover; /* Maintain aspect ratio */
 }
 
 .quest-info {
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .quest-info h3 {
-    font-size: 1.4rem;
-    margin-bottom: 8px;
-    color: #1a202c;
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  color: #1a202c;
 }
 
 .quest-info p {
-    margin-bottom: 20px;
-    color: #4a5568;
-    font-size: 1rem;
-    line-height: 1.5;
-    flex: 1;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  margin-bottom: 20px;
+  color: #4a5568;
+  font-size: 1rem;
+  line-height: 1.5;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .quest-dates {
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid #e5e7eb;
-    font-size: 0.9rem;
-    color: #6b7280;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+  color: #6b7280;
 }
 
 .quest-dates time {
-    font-size: 0.85rem;
-    color: #718096;
+  font-size: 0.85rem;
+  color: #718096;
 }
 
 @media (max-width: 900px) {
-    #quest-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    }
+  #quest-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
 
-    .quest-card {
-        min-width: 280px;
-        max-width: 280px;
-    }
+  .quest-card {
+    min-width: 280px;
+    max-width: 280px;
+  }
 }
