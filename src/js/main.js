@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const newQuestButton = document.querySelector('.btn-new-quest');
     const logoutButton = document.querySelector('.btn-logout');
+    const shareButton = document.createElement('button');
+    
 
     // Functions
     /**
@@ -38,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function fetchQuests() {
         const jwt = localStorage.getItem('jwt');
-        const response = await fetch(`http://localhost:8080/questboard/quests`, {
+        const response = await fetch(`http://40.127.181.161/questboard/quests`, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -150,6 +152,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    // Create a share button for each quest
+    function createQuestElement(quest) {
+        // Create the Share button
+        const shareButton = document.createElement('button');
+        shareButton.textContent = 'Share';
+        shareButton.addEventListener('click', () => {
+            shareQuest(quest.id);
+        });
+        
+        questElement.appendChild(shareButton);
+    }
+
+    // Add the shareQuest function
+    function shareQuest(questId) {
+        fetch(`http://40.127.181.161/questboard/quest/${questId}/generateShareToken`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update the share link to use the correct path
+            const shareLink = `${window.location.origin}/src/html/questDetails.html?shareToken=${data.shareToken}`;
+            alert(`Share this link: ${shareLink}`);
+        })
+        .catch(error => {
+            console.error('Error generating share token:', error);
+        });
+    }
+
     /**
      * Displays the fetched quests on the quest grid.
      */
@@ -163,6 +197,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             const emptyState = document.createElement('p');
             emptyState.className = 'empty-state';
             emptyState.textContent = 'No quests available. Create a new quest to get started!';
+            emptyState.style.cssText = `
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-size: 1.2rem;
+            margin: 2rem auto;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            max-width: 80%;
+            width: fit-content;
+            `;
+            questGrid.style.display = 'flex';
+            questGrid.style.justifyContent = 'center';
+            questGrid.style.alignItems = 'center';
             questGrid.appendChild(emptyState);
             return;
         }
@@ -172,14 +223,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             questCard.className = 'quest-card';
             questCard.dataset.questId = quest.id;
             questCard.style.cursor = 'pointer';
+            questCard.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+            questCard.style.borderRadius = '8px';
+            questCard.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+            questCard.style.transition = 'transform 0.2s ease-in-out';
+            questCard.style.margin = '10px';
+            questCard.style.padding = '15px';
+            questCard.addEventListener('mouseenter', () => {
+            questCard.style.transform = 'scale(1.02)';
+            });
+            questCard.addEventListener('mouseleave', () => {
+            questCard.style.transform = 'scale(1)';
+            });
             questCard.addEventListener('click', () => {
-                window.location.href = `questDetails.html?id=${quest.id}`;
+            window.location.href = `questDetails.html?id=${quest.id}`;
             });
 
             const image = document.createElement('img');
             image.src = quest.imageUrl;
             image.alt = quest.title;
-            image.className = 'quest-image';
+            image.className = 'quest-image'; 
+            image.style.borderRadius = '8px';
 
             const info = document.createElement('div');
             info.className = 'quest-info';
@@ -232,11 +296,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (logoutButton) {
         logoutButton.addEventListener('click', () => {
             localStorage.removeItem('jwt');
-            window.location.href = 'login.html';
+            window.location.href = 'index.html';
         });
     }
 
-    if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+    if (window.location.pathname.endsWith('questboard.html') || window.location.pathname.endsWith('/')) {
         await loadQuestBoard();
     } else if (window.location.pathname.includes('newQuest.html')) {
         await setupNewQuestPage();

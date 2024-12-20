@@ -3,34 +3,53 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quest Board - FestQuest</title>
-    <link rel="icon" type="image/png" href="../resources/favicon.png" />
-    <link rel="stylesheet" href="../css/newQuest.css" />
+    <title>FestQuest</title>
     <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/imageStyles.css" />
     <link rel="stylesheet" href="../css/index.css" />
-    <link rel="stylesheet" href="../css/spinner.css" />
+    <link rel="stylesheet" href="../css/title.css" />
+    <link rel="stylesheet" href="../css/menu.css" />
   </head>
+  <header>
+    <nav class="mask">
+      <a href="#">FestQuest</a>
+      <ul class="list">
+        <li><a href="../html/loginSignupForm.html">Login</a></li>
+        <li><a href="../html/loginSignupForm.html">Sign up</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
   <body>
-    <header class="quest-header">
-      <h1>Quest Board</h1>
-      <p>Plan your festival adventures</p>
-    </header>
-    <main>
-      <!-- Navigation for controls -->
-      <nav class="quest-controls" role="navigation" aria-label="Quest board controls">
-        <button class="btn-new-quest" aria-label="Create a new quest">New Quest</button>
-        <button class="btn-logout" aria-label="Log out">Logout</button>
-      </nav>
-
-      <!-- Quest board section -->
-      <section class="quest-board" aria-labelledby="quest-board-title">
-        <h2 id="quest-board-title" class="sr-only">Available Quests</h2>
-        <div id="quest-grid" aria-live="polite" aria-busy="true">
-          <!-- Spinner is dynamically injected via JavaScript -->
+    <video autoplay muted loop id="myVideo">
+      <source
+        src="../resources/FPV Drone Flight through Beautiful Iceland Canyon.mp4"
+        type="video/mp4"
+      />
+    </video>
+    <section class="wrapper">
+      <div class="top">FestQuest</div>
+      <div class="bottom" aria-hidden="true">FestQuest</div>
+    </section>
+    <div class="landing-page">
+      <div class="container"></div>
+      <div class="content">
+        <div class="container">
+          <div class="info">
+            <h1>Looking to Plan Your Next Event?</h1>
+            <p>FestQuest makes it easy to organize your events effortlessly.</p>
+            <p>Share your events with friends and acquaintances.</p>
+            <p>So, if you're ready to plan your next big adventure.</p>
+            <p>Click the button below! &#x1F60E;</p>
+            <button onclick="location.href='loginSignupForm.html'" type="button">
+                I'm ready!</button>
+          </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
+    <footer>
+      <p>&copy; 2024 FestQuest. All rights reserved.</p>
+    </footer>
     <script src="../js/main.js" type="module"></script>
     <script src="../js/quest.js" type="module"></script>
   </body>

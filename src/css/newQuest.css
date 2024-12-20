@@ -27,6 +27,14 @@ form {
     position: sticky;
     top: 20px;
 }
+#selectedImagePreview {
+    width: 100%;
+    height: 43rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
 
 .quest-description {
     background: white;
@@ -51,6 +59,7 @@ form {
     color: #666;
     text-decoration: none;
 }
+
 
 @media (max-width: 1024px) {
     .page-container {

@@ -38,7 +38,7 @@ function toggleEndTimeFields(e) {
 async function loadQuestForEdit() {
     const jwt = localStorage.getItem('jwt');
     try {
-        const response = await fetch(`http://localhost:8080/questboard/quest/${editQuestId}`, {
+        const response = await fetch(`http://40.127.181.161/questboard/quest/${editQuestId}`, {
             credentials: 'include',
             headers: {
                 'Accept': 'application/json',
@@ -94,8 +94,8 @@ async function handleCreateOrUpdateQuest(event) {
     try {
         const jwt = localStorage.getItem('jwt');
         const url = editQuestId
-            ? `http://localhost:8080/questboard/quest/${editQuestId}`
-            : `http://localhost:8080/questboard/quest`;
+            ? `http://40.127.181.161/questboard/quest/${editQuestId}`
+            : `http://40.127.181.161/questboard/quest`;
 
         const method = editQuestId ? 'PUT' : 'POST';
 
@@ -116,7 +116,7 @@ async function handleCreateOrUpdateQuest(event) {
         }
 
         const result = await response.json();
-        window.location.href = 'index.html';
+        window.location.href = 'questboard.html';
         createQuestButton.disabled = false; 
     } catch (error) {
         console.error('Error creating quest:', error);
