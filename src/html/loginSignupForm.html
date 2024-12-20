@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Signup Form</title>
+    <link rel="stylesheet" href="../css/loginSignupForm.css">
+    <link rel="stylesheet" href="../css/title.css">
+</head>
+<body>
+    <section class="wrapper">
+        <div class="top">FestQuest</div>
+        <div class="bottom" aria-hidden="true">FestQuest</div>
+    </section>
+   <div>
+    <button onclick="location.href='../html/index.html'" class="back-btn">
+        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024"><path d="M874.690416 495.52477c0 11.2973-9.168824 20.466124-20.466124 20.466124l-604.773963 0 188.083679 188.083679c7.992021 7.992021 7.992021 20.947078 0 28.939099-4.001127 3.990894-9.240455 5.996574-14.46955 5.996574-5.239328 0-10.478655-1.995447-14.479783-5.996574l-223.00912-223.00912c-3.837398-3.837398-5.996574-9.046027-5.996574-14.46955 0-5.433756 2.159176-10.632151 5.996574-14.46955l223.019353-223.029586c7.992021-7.992021 20.957311-7.992021 28.949332 0 7.992021 8.002254 7.992021 20.957311 0 28.949332l-188.073446 188.073446 604.753497 0C865.521592 475.058646 874.690416 484.217237 874.690416 495.52477z"></path></svg>
+        <span>Back</span>
+    </button>
+   </div>
+    <div class="container right-panel-active">
+        <!-- Sign Up -->
+        <div class="container__form container--signup">
+            <form action="#" class="form" id="signupForm">
+                <h2 class="form__title">Sign Up</h2>
+                <input type="text" name="firstName" placeholder="First Name" class="input" required />
+                <input type="text" name="lastName" placeholder="Last Name" class="input" required/>
+                <input type="email" name="email" placeholder="Email" class="input" required/>
+                <input type="password" name="password" placeholder="Password" class="input" required/>
+                <button class="btn">Sign Up</button>
+            </form>
+        </div>
+
+        <!-- Sign In -->
+        <div class="container__form container--signin">
+            <form action="#" class="form" id="loginForm">
+                <h2 class="form__title">Sign In</h2>
+                <input type="email" name="email" placeholder="Email" class="input" required/>
+                <input type="password" name="password" placeholder="Password" class="input" required/>
+                <button class="btn">Sign In</button>
+            </form>
+        </div>
+
+        <!-- Overlay -->
+        <div class="container__overlay">
+            <div class="overlay">
+                <div class="overlay__panel overlay--left">
+                    <button class="btn" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay__panel overlay--right">
+                    <button class="btn" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/loginsingupForm.js" type="module"></script>
+</body>
+</html>

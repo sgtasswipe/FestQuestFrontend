@@ -18,13 +18,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'Accept': 'application/json'
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            displayQuestDetails(data);
-        })
-        .catch(error => {
-            console.error('Error fetching quest:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                displayQuestDetails(data);
+            })
+            .catch(error => {
+                console.error('Error fetching quest:', error);
+            });
     } else {
         if (!questId) {
             window.location.href = 'questboard.html';
@@ -82,7 +82,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
     }
-});
+
+
 
 // Functions
 /**
@@ -223,5 +224,4 @@ function shareQuest(questId) {
     })
     .catch(error => {
         console.error('Error generating share token:', error);
-    });
-}
+    }) }})

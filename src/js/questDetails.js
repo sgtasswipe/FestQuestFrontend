@@ -13,13 +13,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (shareToken) {
         await fetchAnyUrl(`${BASE_URL}/questboard/shared/${shareToken}`)
-        .then(response => response.json())
-        .then(data => {
-            displayQuestDetails(data);
-        })
-        .catch(error => {
-            console.error('Error fetching quest:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                displayQuestDetails(data);
+            })
+            .catch(error => {
+                console.error('Error fetching quest:', error);
+            });
     } else {
         if (!questId) {
             window.location.href = 'questboard.html';
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             checkbox.type = 'checkbox';
             const text = document.createElement('span');
             text.textContent = itemText;
-            
+
             li.appendChild(checkbox);
             li.appendChild(text);
             checklistContainer.appendChild(li);
@@ -79,7 +79,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
     }
-});
 
 // Functions
 /**
@@ -215,4 +214,4 @@ function shareQuest(questId) {
         .catch(error => {
             console.error('Error generating share token:', error);
         });
-}
+}});

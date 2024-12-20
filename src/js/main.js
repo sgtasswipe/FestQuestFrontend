@@ -180,6 +180,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             const emptyState = document.createElement('p');
             emptyState.className = 'empty-state';
             emptyState.textContent = 'No quests available. Create a new quest to get started!';
+            emptyState.style.cssText = `
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-size: 1.2rem;
+            margin: 2rem auto;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            max-width: 80%;
+            width: fit-content;
+            `;
+            questGrid.style.display = 'flex';
+            questGrid.style.justifyContent = 'center';
+            questGrid.style.alignItems = 'center';
             questGrid.appendChild(emptyState);
             return;
         }
@@ -189,14 +206,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             questCard.className = 'quest-card';
             questCard.dataset.questId = quest.id;
             questCard.style.cursor = 'pointer';
+            questCard.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+            questCard.style.borderRadius = '8px';
+            questCard.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+            questCard.style.transition = 'transform 0.2s ease-in-out';
+            questCard.style.margin = '10px';
+            questCard.style.padding = '15px';
+            questCard.addEventListener('mouseenter', () => {
+            questCard.style.transform = 'scale(1.02)';
+            });
+            questCard.addEventListener('mouseleave', () => {
+            questCard.style.transform = 'scale(1)';
+            });
             questCard.addEventListener('click', () => {
-                window.location.href = `questDetails.html?id=${quest.id}`;
+            window.location.href = `questDetails.html?id=${quest.id}`;
             });
 
             const image = document.createElement('img');
             image.src = quest.imageUrl;
             image.alt = quest.title;
             image.className = 'quest-image';
+            image.style.borderRadius = '8px';
 
             const info = document.createElement('div');
             info.className = 'quest-info';
