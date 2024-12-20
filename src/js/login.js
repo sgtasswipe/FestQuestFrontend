@@ -1,4 +1,6 @@
 // Variables
+import {BASE_URL} from "./api/constants.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.getElementById('loginForm');
     loginForm.addEventListener('submit', handleLogin);

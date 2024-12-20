@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             checkbox.type = 'checkbox';
             const text = document.createElement('span');
             text.textContent = itemText;
-            
+
             li.appendChild(checkbox);
             li.appendChild(text);
             checklistContainer.appendChild(li);

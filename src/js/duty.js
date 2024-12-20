@@ -12,24 +12,6 @@ async function loadDuties(subQuest, subQuestCard) {
     displayDuties(duties, subQuestCard, subQuest);
 }
 
-async function getDuties(subQuestId) {
-    try {
-        const getDutiesUrl = baseUrl + subQuestId + '/duties';
-
-        const response = await fetch(getDutiesUrl, {
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization' :  `Bearer ${jwt}`
-            }
-        });
-        return response.json();
-    } catch (error) {
-        console.error('Error getting quests: ', error);
-    }
-}
-
 function displayDuties(duties, subQuestCard, subQuest) {
     const dutyCardWrapper = document.createElement('div');
     dutyCardWrapper.className = 'duty-card-wrapper';
